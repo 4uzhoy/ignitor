@@ -1,64 +1,13 @@
-name: ignitor
-description: A Flutter template that serves as a boilerplate for building scalable and maintainable apps. https://github.com/4uzhoy/ignitor
-publish_to: 'none' 
-version: 0.0.1
+name: root
+description: "Workspace root"
 
 environment:
-  sdk: ^3.7.2
+  sdk: ">=3.7.0 <4.0.0"
+  flutter: ">=3.32.0 <4.0.0"
 
-workspace: 
+workspace:
+  - application
   - packages/domain
   - packages/ui
   - packages/localization
   - packages/analytics
-
-dependencies:
-  flutter:
-    sdk: flutter
-
-  #utils
-  pubspec_generator: ^4.0.0
-  collection: any
-  path: any
-  meta: any
-  uuid: any
-
-  #ui
-  ui:
-   path: packages/ui
-  cupertino_icons: ^1.0.8
-  google_fonts: any
-  font_awesome_flutter: ^10.7.0
-
-  #clients
-  json_annotation: ^4.9.0
-
-dev_dependencies:
-  flutter_test:
-    sdk: flutter
-  flutter_lints: ^5.0.0
-  flutter_gen_runner: ^5.4.0
-  flutter_gen: ^5.4.0
-  json_serializable: ^6.8.0
-  flutter_launcher_icons: ^0.13.1
-
-flutter_launcher_icons: #dart run flutter_launcher_icons
-  ios: true
-  android: true
-  image_path: ""
-  remove_alpha_ios: true
-  min_sdk_android: 21  
-
-flutter:
-  uses-material-design: true
-
-flutter_gen:
-  output: lib/src/common/constant/ # Optional (default: lib/gen/)
-  line_length: 120 # Optional (default: 80)
-
-  # Optional
-  integrations:
-    flutter_svg: true
-    rive: true
-    lottie: true
-        
