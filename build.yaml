@@ -1,0 +1,33 @@
+targets:
+  $default:
+    sources:
+      - $package$
+      - lib/**
+      - pubspec.yaml
+    builders:
+      pubspec_generator:
+        options:
+          output: lib/src/common/constant/pubspec.yaml.g.dart
+      json_serializable:
+        options:
+          any_map: false
+          checked: true
+          constructor: ""
+          create_factory: true
+          create_field_map: false
+          create_per_field_to_json: false
+          create_to_json: true
+          disallow_unrecognized_keys: false
+          explicit_to_json: true
+          field_rename: snake
+          generic_argument_factories: false
+          ignore_unannotated: false
+          include_if_null: true
+
+builders:
+  # prime_example:
+  #   import: "package:vitame/src/common/meta/prime_example/builder.dart"
+  #   builder_factories: ["primeExampleBuilder"]
+  #   build_extensions: {".dart": []}  # Не добавляем .prime.md везде
+  #   auto_apply: root_package
+  #   build_to: source
