@@ -3,6 +3,6 @@
 /// More dartdocs go here.
 library;
 
-export 'src/ui_base.dart';
+export 'src/widget/space.dart';
 
 // TODO: Export any libraries intended for clients of this package.

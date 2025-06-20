@@ -9,13 +9,24 @@
       "program": "lib/main.dart",
       "request": "launch",
       "type": "dart",
-      "cwd": "${workspaceFolder}",
+      "cwd": "${workspaceFolder}/application",
       "flutterMode": "debug",
       "console": "debugConsole",
       "env": {},
       "args": [
-        "--dart-define-from-file=.env/development.json",
+        //"--dart-define-from-file=application/.env/development.json",
       ]
+    },
+    {
+      "name": "localize",
+      "program": "packages/localization/bin/main.dart",
+      "request": "launch",
+      "type": "dart",
+      "cwd": "${workspaceFolder}/packages/localization",
+      "flutterMode": "debug",
+      "console": "debugConsole",
+      "env": {},
+      "args": []
     }
   ]
 }
