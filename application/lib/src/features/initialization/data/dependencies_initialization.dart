@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_inlined_adds
+
 import 'dart:async';
 
 import 'package:analytics/analytics.dart';
@@ -9,84 +11,53 @@ import 'package:ignitor/src/features/initialization/model/dependencies.dart';
 import 'package:kv_preferences/kv_preferences.dart';
 import 'package:l/l.dart';
 
-typedef InitializationProgress = void Function(int progress, String message)?;
-typedef InitializationError =
-    void Function(Object error, StackTrace stackTrace);
-typedef InitializationSuccess =
-    FutureOr<void> Function(Dependencies dependencies);
+final List<ExecutorStep<Dependencies>> _initializationSteps =
+    <ExecutorStep<Dependencies>>[ ]..addAll([
+        ExecutorStep('Collect logs', (_) {
+          l.asBroadcastStream().listen(LogBuffer.instance.add);
+          return Future.value();
+        }),
+        ExecutorStep('Key Value Shared Preferences', (deps) async {
+          final store = KeyValueSharedPreferences();
+          await store.initialization(invalidate: false);
+          deps.keyValueSharedPreferences = store;
+        }),
+        ExecutorStep('Analytics Manager', (deps) {
+          final analyticsManager = DefaultAnalyticsManager(
+            reporters: [
+              DebugAnalyticsReporter(),
+              // Add other reporters as needed
+            ],
+          );
+          deps.analyticsManager = analyticsManager;
+          analyticsManager.logEvent(
+            const AnalyticsEventCategory$Start().initializationComplete(),
+          );
+        }),
+      ])
+      ..addAll([
+        ExecutorStep(
+          'Failure',
+          (deps) =>
+              throw Exception('This is a failure step for testing purposes'),
+        ),
+      ])
+      ..addAll([
+        ExecutorStep(
+          'Ready to flutter',
+          (_) => Future.delayed(const Duration(milliseconds: 1)),
+        ),
+      ]);
 
-Future<Dependencies> $initializeDependenciesViaStepExecutor({
-  InitializationProgress? onProgress,
-}) async {
-  final loggerAdapter = _InitializationLoggerAdapter();
-  final dependencies = Dependencies();
-
-  final steps = <ExecutorStep<Dependencies>>[
-    ExecutorStep('Collect logs', (_) {
-      l.asBroadcastStream().listen(LogBuffer.instance.add);
-      return Future.value();
-    }),
-    ExecutorStep('Key Value Shared Preferences', (deps) async {
-      final store = KeyValueSharedPreferences();
-      await store.initialization(invalidate: false);
-      deps.keyValueSharedPreferences = store;
-    }),
-
-    ExecutorStep('Analytics Manager', (deps) {
-      final analyticsManager = DefaultAnalyticsManager(
-        reporters: [
-          DebugAnalyticsReporter(),
-          // Add other reporters as needed
-        ],
-      );
-      deps.analyticsManager = analyticsManager;
-      analyticsManager.logEvent(
-        const AnalyticsEventCategory$Start().initializationComplete(),
-      );
-    }),
-
-    // ExecutorStep(
-    //   'Failure',
-    //   (deps) => throw Exception('This is a failure step for testing purposes'),
-    // ),
-    ExecutorStep(
-      'Ready to flutter',
-      (_) => Future.delayed(const Duration(milliseconds: 1)),
-    ),
-  ];
-
+Stream<StepExecutorState<Dependencies>> $initializeDependencies() async* {
   final executor = StepExecutor<Dependencies>(
+    context: Dependencies(),
     executorAlias: 'InitializationExecutor',
-    executorSteps: steps,
-    context: dependencies,
-    loggerAdapter: loggerAdapter,
+    executorSteps: _initializationSteps,
+    loggerAdapter: _InitializationLoggerAdapter(),
     continueOnError: false,
   );
-
-  await _listenExecutor(executor.execute(), onProgress: onProgress);
-
-  return dependencies;
-}
-
-Future<void> _listenExecutor(
-  Stream<StepExecutorState<Dependencies>> stream, {
-  InitializationProgress? onProgress,
-}) async {
-  await for (final state in stream) {
-    switch (state) {
-      case StepExecutorProgress():
-        onProgress?.call(state.progress, state.message);
-        break;
-      case StepExecutorError():
-        Error.throwWithStackTrace(
-          'Initialization failed at step "${state.step.alias}": ${state.error}',
-          state.stackTrace,
-        );
-
-      default:
-        break;
-    }
-  }
+  yield* executor.execute(500);
 }
 
 class _InitializationLoggerAdapter implements LoggerAdapter {

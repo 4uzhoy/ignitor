@@ -70,7 +70,7 @@ class _RadialProgressIndicatorState extends State<RadialProgressIndicator> with 
             child: CustomPaint(
               painter: _RadialProgressIndicatorPainter(
                 animation: _curvedAnimation,
-                color: Theme.of(context).indicatorColor,
+                color: Theme.of(context).primaryColor,
                 isCompleted: widget.isCompleted,
               ),
               child: Center(

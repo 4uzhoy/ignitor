@@ -7,7 +7,7 @@ import 'package:ui/ui.dart';
 class InitializationSplashScreen extends StatelessWidget {
   const InitializationSplashScreen({
     required this.progress,
-     this.lightThemeData,
+    this.lightThemeData,
     super.key,
     this.darkThemeData,
   });
@@ -49,8 +49,8 @@ class InitializationSplashScreen extends StatelessWidget {
                                         FontAwesomeIcons.check,
                                         key: const ValueKey<bool>(true),
                                         size: 170,
-                                        color: theme.colorScheme.primary,
-                                        //color: Theme.of(context).indicatorColor,
+                                        //color: theme.colorScheme.primary,
+                                        color: Theme.of(context).indicatorColor,
                                       )
                                       : Center(
                                         child: Column(
@@ -59,7 +59,6 @@ class InitializationSplashScreen extends StatelessWidget {
                                           crossAxisAlignment:
                                               CrossAxisAlignment.center,
                                           children: [
-                                            
                                             Space.md(),
                                             const SizedBox(
                                               width: 100,
@@ -70,7 +69,7 @@ class InitializationSplashScreen extends StatelessWidget {
                                               width: 246,
                                               child: Text(
                                                 'Ignitor is initializing...',
-                                                // CommonLocalization.of(context).vitame_way,
+
                                                 style: textTheme.bodyMedium!,
                                                 textAlign: TextAlign.center,
                                               ),

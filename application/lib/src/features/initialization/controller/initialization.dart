@@ -2,42 +2,19 @@ import 'dart:async';
 import 'dart:ui';
 
 import 'package:flutter/widgets.dart';
+import 'package:ignitor/src/common/util/executor/executor_state.dart';
 import 'package:ignitor/src/features/initialization/data/dependencies_initialization.dart';
 import 'package:ignitor/src/features/initialization/model/dependencies.dart';
 
-
-Future<Dependencies>? _$initializeApplicationFuture;
-
-Future<Dependencies> $initializeApplication({
-  InitializationProgress? onProgress,
-  InitializationSuccess? onSuccess,
-  InitializationError? onError,
-}) =>
-    _$initializeApplicationFuture ??= Future<Dependencies>(() async {
-      late final WidgetsBinding binding;
-      try {
-        binding = WidgetsFlutterBinding.ensureInitialized()..deferFirstFrame();
-        await _catchExceptions();
-
-        final dependencies = await $initializeDependenciesViaStepExecutor(
-          onProgress: onProgress,
-        ).timeout(const Duration(seconds: 30));
-
-        await onSuccess?.call(dependencies);
-        return dependencies;
-      } on Object catch (e, st) {
-        onError?.call(e, st);
-       // ErrorUtil.logError(e, st).ignore();
-        rethrow;
-      } finally {
-       
-        binding.addPostFrameCallback((_) {
-          binding.allowFirstFrame();
-        });
-        _$initializeApplicationFuture = null;
-      }
-    });
-
+Stream<StepExecutorState<Dependencies>> $initializeApplication() async* {
+  try {
+    WidgetsFlutterBinding.ensureInitialized();
+    await _catchExceptions();
+    yield* $initializeDependencies().timeout(const Duration(seconds: 30));
+  } finally {
+    //  binding.addPostFrameCallback((_) => binding.allowFirstFrame());
+  }
+}
 
 Future<void> _catchExceptions() async {
   try {
@@ -61,6 +38,6 @@ Future<void> _catchExceptions() async {
       sourceFlutterError?.call(details);
     };
   } on Object catch (error, stackTrace) {
-   // ErrorUtil.logError(error, stackTrace).ignore();
+    // ErrorUtil.logError(error, stackTrace).ignore();
   }
 }

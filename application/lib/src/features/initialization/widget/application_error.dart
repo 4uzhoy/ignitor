@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 /// {@template app_error}
 /// AppError widget
 /// {@endtemplate}
-class AppError extends StatelessWidget {
+class ApplicationError extends StatelessWidget {
   /// {@macro app_error}
-  const AppError({
+  const ApplicationError({
     this.error,
     this.lightThemeData,
     this.darkThemeData,
@@ -19,7 +19,7 @@ class AppError extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => MaterialApp(
-    title: 'App Error',
+    title: 'Application Error',
     theme:
         View.of(context).platformDispatcher.platformBrightness ==
                 Brightness.dark
@@ -29,7 +29,7 @@ class AppError extends StatelessWidget {
       builder:
           (context) => Scaffold(
             appBar: AppBar(
-              title: const Text('AppError'),
+              title: const Text('Application Error'),
               actions: const [
                 // IconButton(
                 //   onPressed: () => Navigator.of(context).push(

@@ -14,10 +14,10 @@ abstract base class _$BaseStepExecutorState<T> {
   const _$BaseStepExecutorState(this.context);
 
   /// Checks if the state represents a completed execution.
-  bool get isCompleted => this is StepExecutorComplete<T>;
+  bool get isCompleted => this is StepExecutorCompleted<T>;
 
   /// Checks if the state represents a completed execution with errors.
-  bool get hasErrors => this is StepExecutorCompleteWithErrors<T>;
+  bool get hasErrors => this is StepExecutorCompletedWithErrors<T>;
 
   /// Checks if the state represents an ongoing execution.
   bool get isInProgress => this is StepExecutorProgress<T>;
@@ -26,7 +26,7 @@ abstract base class _$BaseStepExecutorState<T> {
   bool get isError => this is StepExecutorError<T>;
 
   /// Checks if the execution was successful (no errors).
-  bool get isSuccessful => this is StepExecutorComplete<T> && !hasErrors;
+  bool get isSuccessful => this is StepExecutorCompleted<T> && !hasErrors;
 
   @override
   String toString() => '$runtimeType(context: $context)';
@@ -108,13 +108,13 @@ final class StepExecutorProgress<T> extends StepExecutorState<T> {
 
 /// Represents successful completion of all steps.
 @immutable
-final class StepExecutorComplete<T> extends StepExecutorState<T> {
-  const StepExecutorComplete(super.context);
+final class StepExecutorCompleted<T> extends StepExecutorState<T> {
+  const StepExecutorCompleted(super.context);
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is StepExecutorComplete &&
+      other is StepExecutorCompleted &&
           runtimeType == other.runtimeType &&
           context == other.context;
 
@@ -124,8 +124,8 @@ final class StepExecutorComplete<T> extends StepExecutorState<T> {
 
 /// Represents partial completion with one or more errors.
 @immutable
-final class StepExecutorCompleteWithErrors<T> extends StepExecutorState<T> {
-  const StepExecutorCompleteWithErrors(this.errors, super.context);
+final class StepExecutorCompletedWithErrors<T> extends StepExecutorState<T> {
+  const StepExecutorCompletedWithErrors(this.errors, super.context);
 
   /// Map of step aliases to the error object.
   final Map<String, Object?> errors;
@@ -133,7 +133,7 @@ final class StepExecutorCompleteWithErrors<T> extends StepExecutorState<T> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is StepExecutorCompleteWithErrors &&
+      other is StepExecutorCompletedWithErrors &&
           runtimeType == other.runtimeType &&
           mapEquals(errors, other.errors);
 

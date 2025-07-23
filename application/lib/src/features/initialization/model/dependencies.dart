@@ -8,12 +8,6 @@ import 'package:kv_preferences/kv_preferences.dart';
 extension ContextX on BuildContext {
   Dependencies get dependencies => InheritedDependencies.of(this);
 
-  // AppMetadata get metadata => dependencies.metadata;
-
-  // RestClient get restClient => dependencies.restClient;
-
-  // SqlDatabase get sqlDatabase => dependencies.sqlDatabase;
-
   KeyValueSharedPreferences get store => dependencies.keyValueSharedPreferences;
 
   AnalyticsManager get analytics => dependencies.analyticsManager;

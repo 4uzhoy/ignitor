@@ -79,7 +79,7 @@ class StepExecutor<T> {
   ///
   /// If [continueOnError] is true, execution will continue even if an error occurs.
   /// If false, execution stops at the first error.
-  Stream<StepExecutorState<T>> execute() async* {
+  Stream<StepExecutorState<T>> execute([int latencyMs = 0]) async* {
     final t = Stopwatch()..start();
     resetExecutionStatus();
     Object? error;
@@ -110,7 +110,9 @@ class StepExecutor<T> {
         final stepFunction = step.fn;
         try {
           final t = Stopwatch()..start();
-
+          if (latencyMs > 0) {
+            await Future<void>.delayed(Duration(milliseconds: latencyMs));
+          }
           await stepFunction(context);
           final time = t..stop();
           l.verbose(
@@ -141,9 +143,9 @@ class StepExecutor<T> {
         StepExecutorProgress.finishStep(context, lastExecution!, totalsteps),
       );
       if (_hasErrorsInProcess) {
-        yield* emit(StepExecutorCompleteWithErrors(_errorMap, context));
+        yield* emit(StepExecutorCompletedWithErrors(_errorMap, context));
       } else {
-        yield* emit(StepExecutorComplete(context));
+        yield* emit(StepExecutorCompleted(context));
       }
     }
   }

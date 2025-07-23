@@ -9,6 +9,7 @@ import 'package:ui/ui.dart';
 // final ThemeNotifier themeNotifier = ThemeNotifier(lightTheme: true);
 
 class Application extends StatelessWidget {
+  const Application({super.key});
   static final _globalKey = GlobalKey(debugLabel: 'ApplicationMaterialContext');
   @override
   Widget build(BuildContext context) {
