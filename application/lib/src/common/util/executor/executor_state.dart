@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:ignitor/src/common/executor/executor_step.dart';
+import 'package:ignitor/src/common/util/executor/executor_step.dart';
 
 /// Base class representing the state of a [StepExecutor].
 @immutable
