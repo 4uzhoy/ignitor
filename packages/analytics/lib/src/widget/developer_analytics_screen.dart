@@ -65,7 +65,7 @@ class DeveloperAnalyticsScreen extends StatelessWidget {
                       return ExpansionTile(
                         showTrailingIcon: event.event.hasParameters,
                         title: Text(
-                          '${event.index}. ${event.event.eventCategory}_${event.event.eventName}',
+                          '${event.index}. ${event.event.name}',
                           style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
                         ),
                         subtitle: Text('${event.reporterType} (from observer: ${event.eventFromObserver})'),
@@ -81,7 +81,7 @@ class DeveloperAnalyticsScreen extends StatelessWidget {
                           else
                             const Padding(
                               padding: EdgeInsets.all(8),
-                              child: Text('Без параметров'),
+                              child: Text('No parameters'),
                             ),
                         ],
                       );

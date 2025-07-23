@@ -12,18 +12,18 @@ import 'package:flutter/material.dart';
 ///
 /// {@endtemplate}
 mixin AnalyticsStateMixin<T extends StatefulWidget> on State<T> {
-  AnalyticsManager get analyticsManager;
+  AnalyticsManager Function(BuildContext context) get analyticsManager;
 
   /// Logs the provided [event] to analytics.
   Future<void> logEvent(BuildContext context, AnalyticsEvent event) async =>
-      analyticsManager.logEvent(event).ignore();
+      analyticsManager(context).logEvent(event).ignore();
 }
 
 /// {@macro analytics_widget_mixin}
 mixin AnalyticsStatelessMixin on StatelessWidget {
-  AnalyticsManager get analyticsManager;
+  AnalyticsManager Function(BuildContext context) get analyticsManager;
 
   /// Logs the provided [event] to analytics.
   Future<void> logEvent(BuildContext context, AnalyticsEvent event) async =>
-      analyticsManager.logEvent(event).ignore();
+      analyticsManager(context).logEvent(event).ignore();
 }

@@ -13,4 +13,7 @@ final class AnalyticsEventCategory$Start extends AnalyticsEventCategoryFactory {
   /// Event of successful initialization of the application.
   AnalyticsEvent initializationComplete({Map<String, Object?>? parameters}) =>
       createEvent('initialization_complete', parameters: parameters);
+
+  AnalyticsEvent showHomeScreen({Map<String, Object?>? parameters}) =>
+      createEvent('show_home_screen', parameters: parameters);
 }

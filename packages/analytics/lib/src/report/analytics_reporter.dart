@@ -35,18 +35,42 @@ abstract interface class AnalyticsReporter {
   /// For example, if the event is logged by an observer and the observer logs
   /// the event to the analytics service, the event should not be logged again
   /// by the analytics manager.
-  Future<void> logEvent(AnalyticsEvent event, {bool eventFromObserver = false, bool isEnabled = false});
+  Future<void> logEvent(
+    AnalyticsEvent event, {
+    bool eventFromObserver = false,
+    bool isEnabled = false,
+  });
 }
 
-abstract base class AnalyticsReporter$Base<T extends AnalyticsReporter> implements AnalyticsReporter {
+abstract base class AnalyticsReporter$Base<T extends AnalyticsReporter>
+    implements AnalyticsReporter {
   const AnalyticsReporter$Base();
 
   /// Sends the event to the history
   /// This method should be called before any other methods in the class.
   @override
   @mustCallSuper
-  Future<void> logEvent(AnalyticsEvent event, {bool eventFromObserver = false, bool isEnabled = false}) async {
+  Future<void> logEvent(
+    AnalyticsEvent event, {
+    bool eventFromObserver = false,
+    bool isEnabled = false,
+  }) async {
     AnalyticsEventHistory.isEnabled = isEnabled;
-    AnalyticsEventHistory.instance.addEvent(event: event, reporterType: T, eventFromObserver: eventFromObserver);
+    AnalyticsEventHistory.instance.addEvent(
+      event: event,
+      reporterType: T,
+      eventFromObserver: eventFromObserver,
+    );
+  }
+}
+
+final class DebugAnalyticsReporter
+    extends AnalyticsReporter$Base<DebugAnalyticsReporter> {
+  @override
+  bool get isEnabled => true;
+
+  @override
+  Future<void> initialize() async {
+    // No initialization needed for debug reporter.
   }
 }

@@ -1,6 +1,3 @@
-
-
-
 import 'package:flutter/foundation.dart';
 import 'package:collection/collection.dart';
 
@@ -23,21 +20,10 @@ base class AnalyticsEvent {
   /// Returns `true` if the event has parameters.
   bool get hasParameters => parameters != null && parameters!.isNotEmpty;
 
-  // Извлекает категорию из имени события, учитывая категории с `_` (например, `my_course_click_button` → `my_course`).
-  String get eventCategory {
-    // for (final category in AnalyticsEventCategoryFactory.categoriesNames) {
-    //   if (name.startsWith('${category}_')) {
-    //     return category;
-    //   }
-    // }
-    return 'unknown';
-  }
+  // Returns the category of the event.
+  String get eventName => name.split('_').skip(1).join('_');
 
-  // Извлекает само название события без категории (например, `my_course_click_button` → `click_button`).
-  String get eventName {
-    final category = eventCategory;
-    return category != 'unknown' ? name.replaceFirst('${category}_', '') : name;
-  }
+  String get eventCategory => name.split('_').firstOrNull ?? name;
 
   @override
   String toString() {
@@ -60,5 +46,6 @@ base class AnalyticsEvent {
   }
 
   @override
-  int get hashCode => name.hashCode ^ const DeepCollectionEquality().hash(parameters);
+  int get hashCode =>
+      name.hashCode ^ const DeepCollectionEquality().hash(parameters);
 }

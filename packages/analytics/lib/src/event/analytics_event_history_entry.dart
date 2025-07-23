@@ -37,7 +37,7 @@ class AnalyticsEventHistoryEntry {
   String toString() {
     final buffer =
         StringBuffer()..write(
-          '[#$index] ${event.eventCategory}_${event.eventName} '
+          '[#$index] ${event.eventName} '
           '(from: $reporterType, observer: $eventFromObserver, time: $timestamp, params: {',
         );
 

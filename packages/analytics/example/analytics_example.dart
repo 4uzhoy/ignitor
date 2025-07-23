@@ -35,12 +35,9 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage>
     with AnalyticsStateMixin<MyHomePage> {
   @override
-  AnalyticsManager get analyticsManager => widget.analyticsManager;
-
-  @override
   void initState() {
     super.initState();
-    analyticsManager.initialize();
+
     logEvent(
       context,
       const AnalyticsEventCategory$Start().initializationComplete(
@@ -76,6 +73,10 @@ class _MyHomePageState extends State<MyHomePage>
       ),
     );
   }
+
+  @override
+  AnalyticsManager Function(BuildContext context) get analyticsManager =>
+      (context) => widget.analyticsManager;
 }
 
 /// A simple debug reporter that prints events to console.
