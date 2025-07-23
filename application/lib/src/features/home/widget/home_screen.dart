@@ -1,5 +1,7 @@
+import 'package:analytics/analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:ignitor/src/common/widget/ignitor_app_bar.dart';
+import 'package:ignitor/src/features/initialization/model/dependencies.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
@@ -19,8 +21,19 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyHomePageState extends State<MyHomePage> with AnalyticsStateMixin {
   int _counter = 0;
+
+  @override
+  void initState() {
+    logEvent(
+      context,
+      const AnalyticsEventCategory$Start().showHomeScreen(
+        parameters: {'timestamp': DateTime.now().toIso8601String()},
+      ),
+    );
+    super.initState();
+  }
 
   void _incrementCounter() {
     setState(() {
@@ -85,4 +98,8 @@ class _MyHomePageState extends State<MyHomePage> {
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
+
+  @override
+  AnalyticsManager Function(BuildContext context) get analyticsManager =>
+      (context) => context.dependencies.analyticsManager;
 }
