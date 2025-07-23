@@ -1,4 +1,5 @@
 ## [🔥] Ignitor
+![Logo](https://github.com/4uzhoy/ignitor/blob/main/doc/logo.jpg)
 
 Ignitor is a Flutter project template with predefined structure and tooling, built for projects where key architectural choices are already made.
 It’s not a flexible starter for every use case — instead, it reflects an opinionated setup meant to streamline the early stages of development.
