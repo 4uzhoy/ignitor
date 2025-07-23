@@ -18,6 +18,7 @@ class IgnitorAppBar extends StatelessWidget implements PreferredSizeWidget {
     final bool center = true,
     final Widget? leadingWidget,
     final bool? canPop,
+    final Color? backgroundColor,
     final PopInvokedWithResultCallback<Object>? didPopInvokedWithResult,
   }) => IgnitorAppBar._(
     title: title,
@@ -26,6 +27,7 @@ class IgnitorAppBar extends StatelessWidget implements PreferredSizeWidget {
     center: center,
     leadingWidget: leadingWidget,
     canPop: canPop,
+    backgroundColor: backgroundColor,
     didPopInvokedWithResult: didPopInvokedWithResult,
   );
 
@@ -35,13 +37,15 @@ class IgnitorAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.center = true,
     this.bottomTabBar,
     this.leadingWidget,
+    this.backgroundColor,
     this.canPop,
     this.didPopInvokedWithResult,
   });
   final bool? canPop;
   final PopInvokedWithResultCallback<Object>? didPopInvokedWithResult;
+  final Color? backgroundColor;
 
-  /// Если [leadingWidget] не null и перейти назад нельзя, то будет отображаться [leadingWidget]
+  /// if [leadingWidget] is not null and cannot go back, [leadingWidget] will be displayed
   final Widget? leadingWidget;
   final bool center;
   final List<Widget>? actions;
@@ -56,7 +60,7 @@ class IgnitorAppBar extends StatelessWidget implements PreferredSizeWidget {
     bottom: bottomTabBar,
     elevation: 0,
     surfaceTintColor: Colors.transparent,
-    backgroundColor: Colors.transparent,
+    backgroundColor: backgroundColor ?? Colors.transparent,
     leadingWidth: 120,
     leading:
         Navigator.of(context).canPop()

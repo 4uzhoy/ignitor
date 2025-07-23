@@ -1,3 +1,4 @@
+import 'package:analytics/analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:ignitor/src/features/developer/widget/developer_button.dart';
 import 'package:ui/ui.dart';
@@ -36,6 +37,26 @@ class _DeveloperScreenState extends State<DeveloperScreen> {
                 title: 'meta',
                 subtitle: 'application meta data',
                 onTap: () {},
+              ),
+            ],
+          ),
+          _Category(
+            categoryName: 'Data',
+            children: [
+              // _CategoryItem(
+              //   title: 'kv preferences',
+              //   subtitle: 'key value preferences store',
+              //   onTap: () => _push( KeyValuePreferences),
+              // ),
+            ],
+          ),
+          _Category(
+            categoryName: 'Analytics',
+            children: [
+              _CategoryItem(
+                title: 'reporter history',
+                subtitle: 'show analytics reporter history',
+                onTap: () => _push(const DeveloperAnalyticsScreen()),
               ),
             ],
           ),
