@@ -12,6 +12,16 @@ resolution: workspace
 dependencies:
   flutter:
     sdk: flutter
+ #locatiozation
+  flutter_localizations:
+    sdk: flutter
+  localization:
+    path: ../packages/localization
+  intl: ^0.19.0
+
+  #analytics
+  analytics: 
+    path: ../packages/analytics
 
   #utils
   tinygram: ^1.0.2
@@ -33,6 +43,9 @@ dependencies:
 
   #storage
   kv_preferences: ^1.0.0
+
+  #logger
+  l: ^5.0.1
   
 
 dev_dependencies:
