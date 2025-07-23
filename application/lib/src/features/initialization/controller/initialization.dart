@@ -6,45 +6,40 @@ import 'package:ignitor/src/features/initialization/data/dependencies_initializa
 import 'package:ignitor/src/features/initialization/model/dependencies.dart';
 
 
-Future<Dependencies>? _$initializaApplication;
+Future<Dependencies>? _$initializeApplicationFuture;
 
 Future<Dependencies> $initializeApplication({
   InitializationProgress? onProgress,
   InitializationSuccess? onSuccess,
   InitializationError? onError,
 }) =>
-    _$initializaApplication ??= Future<Dependencies>(() async {
-      late final WidgetsBinding widgetsBinding;
+    _$initializeApplicationFuture ??= Future<Dependencies>(() async {
       final stopwatch = Stopwatch()..start();
+      late final WidgetsBinding binding;
+
       try {
-        widgetsBinding = WidgetsFlutterBinding.ensureInitialized()..deferFirstFrame();
+        binding = WidgetsFlutterBinding.ensureInitialized()..deferFirstFrame();
         await _catchExceptions();
-        final dependencies = await $initializeDependencies(onProgress: onProgress).timeout(const Duration(seconds: 30));
+
+        final dependencies = await $initializeDependenciesViaStepExecutor(
+          onProgress: onProgress,
+        ).timeout(const Duration(seconds: 30));
+
         await onSuccess?.call(dependencies);
         return dependencies;
-      } on Object catch (error, stackTrace) {
-        onError?.call(error, stackTrace);
-       // ErrorUtil.logError(error, stackTrace).ignore();
+      } on Object catch (e, st) {
+        onError?.call(e, st);
+       // ErrorUtil.logError(e, st).ignore();
         rethrow;
       } finally {
         stopwatch.stop();
-        widgetsBinding.addPostFrameCallback((_) {
-          // Closes splash screen, and show the app layout.
-          widgetsBinding.allowFirstFrame();
-          //final context = binding.renderViewElement;
+        binding.addPostFrameCallback((_) {
+          binding.allowFirstFrame();
         });
-        _$initializaApplication = null;
+        _$initializeApplicationFuture = null;
       }
     });
 
-/// Resets the app's state to its initial state.
-@visibleForTesting
-Future<void> $resetApp(Dependencies dependencies) async {}
-
-/// Disposes the app and releases all resources.
-@visibleForTesting
-Future<void> $disposeApp(Dependencies dependencies) async {
-}
 
 Future<void> _catchExceptions() async {
   try {

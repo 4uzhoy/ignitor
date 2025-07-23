@@ -1,55 +1,70 @@
 import 'dart:async';
 
+import 'package:ignitor/src/common/util/executor/executor.dart';
+import 'package:ignitor/src/common/util/executor/executor_state.dart';
+import 'package:ignitor/src/common/util/executor/executor_step.dart';
+import 'package:ignitor/src/common/util/logger_util.dart';
 import 'package:ignitor/src/features/initialization/model/dependencies.dart';
+import 'package:kv_preferences/kv_preferences.dart';
+import 'package:l/l.dart';
 
-typedef _InitializationStep =
-    FutureOr<void> Function(Dependencies dependencies);
 typedef InitializationProgress = void Function(int progress, String message)?;
 typedef InitializationError =
     void Function(Object error, StackTrace stackTrace);
 typedef InitializationSuccess =
     FutureOr<void> Function(Dependencies dependencies);
-
-/// allow to delay each step of initialization
-/// to simulate a real initialization process.
-/// By default, it is set to 1 millisecond.
-/// You can change it to a higher value to simulate a longer initialization process.
-const _$stepDurationMs = 1;
-
-final Map<String, _InitializationStep> _initializationSteps =
-    <String, _InitializationStep>{
-      // 'Initialize dependencies':
-      //     (_) => l.asBroadcastStream().listen(LogBuffer.instance.add),
-    }..addAll({
-      'Ready to work!':
-          (_) async => await Future.delayed(const Duration(seconds: 1)),
-    });
-
-
-/// Register an initialization step.
-/// The [initializationStep] will be executed during the initialization process.
-///
-Future<Dependencies> $initializeDependencies({
-  InitializationProgress onProgress,
+Future<Dependencies> $initializeDependenciesViaStepExecutor({
+  InitializationProgress? onProgress,
 }) async {
-  const dependencies = Dependencies();
-  final totalSteps = _initializationSteps.length;
-  var currentStep = 0;
+  final loggerAdapter = _InitializationLoggerAdapter();
+  final dependencies = Dependencies();
 
-  for (final initializationStep in _initializationSteps.entries) {
-    final stepName = initializationStep.key;
-    final step = initializationStep.value;
-    try {
-      currentStep++;
-      final percent = (currentStep / totalSteps * 100).clamp(0, 100).toInt();
-      onProgress?.call(percent, stepName);
-      //l.v6('Initializing step | $currentStep/$totalSteps ($percent%) | "$stepName"');
-      await Future.delayed(const Duration(milliseconds: _$stepDurationMs), () async => await step(dependencies));
-    } on Object catch (error, stack) {
-     // l.e('Initialization failed at step "${initializationStep.key}": $error', stack);
-      Error.throwWithStackTrace('Initialization failed at step "${initializationStep.key}": $error', stack);
+  final steps = <ExecutorStep<Dependencies>>[
+    ExecutorStep('Collect logs', (_) {
+      l.asBroadcastStream().listen(LogBuffer.instance.add);
+      return Future.value();
+    }),
+    ExecutorStep('Key Value Shared Preferences', (deps) async {
+      final store = KeyValueSharedPreferences();
+      await store.initialization(invalidate: false);
+      deps.keyValueSharedPreferences = store;
+    }),
+
+    ExecutorStep(
+      'Ready to flutter',
+      (_) => Future.delayed(const Duration(milliseconds: 1)),
+    ),
+  ];
+
+  final executor = StepExecutor<Dependencies>(
+    executorAlias: 'InitializationExecutor',
+    executorSteps: steps,
+    context: dependencies,
+    loggerAdapter: loggerAdapter,
+  );
+
+  await for (final state in executor.execute()) {
+    if (state is StepExecutorProgress<Dependencies>) {
+      onProgress?.call(state.progress, state.message);
+    } else if (state is StepExecutorError<Dependencies>) {
+      Error.throwWithStackTrace(
+        'Initialization failed at step "${state.step.alias}": ${state.error}',
+        state.stackTrace,
+      );
     }
   }
+
   return dependencies;
-  // return dependencies;
+}
+
+class _InitializationLoggerAdapter implements LoggerAdapter {
+  @override
+  void error(String message, StackTrace stackTrace, {int level = 1}) =>
+      l.e(message, stackTrace);
+
+  @override
+  void info(String message, {int level = 1}) => l.i(message);
+
+  @override
+  void verbose(String message, {int level = 3}) => l.v(message);
 }
