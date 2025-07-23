@@ -1,6 +1,8 @@
+import 'dart:async';
+
 /// ExecutorStep represents a step in the synchronization process.
 /// context is the type of the context that will be passed to the step function.
-typedef ExecutorStepFunction<T> = Future<void> Function(T context);
+typedef ExecutorStepFunction<T> = FutureOr<void> Function(T context);
 
 /// {@category Utils}
 /// {@template ExecutorStep}
