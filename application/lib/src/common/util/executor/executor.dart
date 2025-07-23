@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:ignitor/src/common/executor/executor_state.dart';
-import 'package:ignitor/src/common/executor/executor_step.dart';
+import 'package:ignitor/src/common/util/executor/executor_state.dart';
+import 'package:ignitor/src/common/util/executor/executor_step.dart';
 import 'package:ignitor/src/common/util/logger_util.dart';
 
 /// {@category Utils}
