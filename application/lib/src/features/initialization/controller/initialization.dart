@@ -14,9 +14,7 @@ Future<Dependencies> $initializeApplication({
   InitializationError? onError,
 }) =>
     _$initializeApplicationFuture ??= Future<Dependencies>(() async {
-      final stopwatch = Stopwatch()..start();
       late final WidgetsBinding binding;
-
       try {
         binding = WidgetsFlutterBinding.ensureInitialized()..deferFirstFrame();
         await _catchExceptions();
@@ -32,7 +30,7 @@ Future<Dependencies> $initializeApplication({
        // ErrorUtil.logError(e, st).ignore();
         rethrow;
       } finally {
-        stopwatch.stop();
+       
         binding.addPostFrameCallback((_) {
           binding.allowFirstFrame();
         });

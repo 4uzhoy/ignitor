@@ -1,9 +1,26 @@
 // ignore_for_file: library_private_types_in_public_api
 
+import 'package:analytics/analytics.dart';
+import 'package:flutter/material.dart';
+import 'package:ignitor/src/features/initialization/widget/inherited_dependencies.dart';
 import 'package:kv_preferences/kv_preferences.dart';
 
+extension ContextX on BuildContext {
+  Dependencies get dependencies => InheritedDependencies.of(this);
+
+  // AppMetadata get metadata => dependencies.metadata;
+
+  // RestClient get restClient => dependencies.restClient;
+
+  // SqlDatabase get sqlDatabase => dependencies.sqlDatabase;
+
+  KeyValueSharedPreferences get store => dependencies.keyValueSharedPreferences;
+
+  AnalyticsManager get analytics => dependencies.analyticsManager;
+}
+
 final class Dependencies extends _$BaseDependencies
-    with Controller$Dependencies, Data$Dependencies {
+    with Controller$Dependencies, Data$Dependencies, Analytics$Dependencies {
   Dependencies();
 }
 
@@ -17,6 +34,11 @@ base mixin Data$Dependencies on _$BaseDependencies {
   // Define data-related dependencies here.
   // Example:
   // late final SomeRepository someRepository;
+}
+
+base mixin Analytics$Dependencies on _$BaseDependencies {
+  /// Analytics manager for tracking events.
+  late final AnalyticsManager analyticsManager;
 }
 
 /// Base class for dependencies initialization.

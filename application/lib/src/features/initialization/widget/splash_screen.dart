@@ -7,12 +7,12 @@ import 'package:ui/ui.dart';
 class InitializationSplashScreen extends StatelessWidget {
   const InitializationSplashScreen({
     required this.progress,
-    required this.lightThemeData,
+     this.lightThemeData,
     super.key,
     this.darkThemeData,
   });
   final ValueListenable<({int progress, String message})> progress;
-  final ThemeData lightThemeData;
+  final ThemeData? lightThemeData;
   final ThemeData? darkThemeData;
   bool get almostComplete => progress.value.progress > 90;
   bool get isLastStep => progress.value.progress == 100;
@@ -21,8 +21,8 @@ class InitializationSplashScreen extends StatelessWidget {
     final theme =
         View.of(context).platformDispatcher.platformBrightness ==
                 Brightness.dark
-            ? lightThemeData
-            : darkThemeData ?? lightThemeData;
+            ? lightThemeData ?? ThemeData.light(useMaterial3: true)
+            : darkThemeData ?? ThemeData.dark(useMaterial3: true);
     final textTheme = theme.textTheme;
     return Theme(
       data: theme,

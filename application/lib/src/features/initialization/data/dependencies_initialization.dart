@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:analytics/analytics.dart';
 import 'package:ignitor/src/common/util/executor/executor.dart';
 import 'package:ignitor/src/common/util/executor/executor_state.dart';
 import 'package:ignitor/src/common/util/executor/executor_step.dart';
@@ -13,6 +14,7 @@ typedef InitializationError =
     void Function(Object error, StackTrace stackTrace);
 typedef InitializationSuccess =
     FutureOr<void> Function(Dependencies dependencies);
+
 Future<Dependencies> $initializeDependenciesViaStepExecutor({
   InitializationProgress? onProgress,
 }) async {
@@ -30,6 +32,23 @@ Future<Dependencies> $initializeDependenciesViaStepExecutor({
       deps.keyValueSharedPreferences = store;
     }),
 
+    ExecutorStep('Analytics Manager', (deps) {
+      final analyticsManager = DefaultAnalyticsManager(
+        reporters: [
+          DebugAnalyticsReporter(),
+          // Add other reporters as needed
+        ],
+      );
+      deps.analyticsManager = analyticsManager;
+      analyticsManager.logEvent(
+        const AnalyticsEventCategory$Start().initializationComplete(),
+      );
+    }),
+
+    // ExecutorStep(
+    //   'Failure',
+    //   (deps) => throw Exception('This is a failure step for testing purposes'),
+    // ),
     ExecutorStep(
       'Ready to flutter',
       (_) => Future.delayed(const Duration(milliseconds: 1)),
@@ -41,20 +60,33 @@ Future<Dependencies> $initializeDependenciesViaStepExecutor({
     executorSteps: steps,
     context: dependencies,
     loggerAdapter: loggerAdapter,
+    continueOnError: false,
   );
 
-  await for (final state in executor.execute()) {
-    if (state is StepExecutorProgress<Dependencies>) {
-      onProgress?.call(state.progress, state.message);
-    } else if (state is StepExecutorError<Dependencies>) {
-      Error.throwWithStackTrace(
-        'Initialization failed at step "${state.step.alias}": ${state.error}',
-        state.stackTrace,
-      );
-    }
-  }
+  await _listenExecutor(executor.execute(), onProgress: onProgress);
 
   return dependencies;
+}
+
+Future<void> _listenExecutor(
+  Stream<StepExecutorState<Dependencies>> stream, {
+  InitializationProgress? onProgress,
+}) async {
+  await for (final state in stream) {
+    switch (state) {
+      case StepExecutorProgress():
+        onProgress?.call(state.progress, state.message);
+        break;
+      case StepExecutorError():
+        Error.throwWithStackTrace(
+          'Initialization failed at step "${state.step.alias}": ${state.error}',
+          state.stackTrace,
+        );
+
+      default:
+        break;
+    }
+  }
 }
 
 class _InitializationLoggerAdapter implements LoggerAdapter {

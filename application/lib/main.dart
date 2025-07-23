@@ -14,13 +14,7 @@ Future<void> entryPoint() async {
         progress: 0,
         message: '',
       ));
-  runApp(
-    InitializationSplashScreen(
-      progress: initializationProgress,
-      lightThemeData: ThemeData.light(useMaterial3: true),
-    ),
-  );
-
+  runApp(InitializationSplashScreen(progress: initializationProgress));
   $initializeApplication(
     onProgress:
         (progress, message) =>
@@ -29,9 +23,9 @@ Future<void> entryPoint() async {
               message: message,
             ),
     onSuccess:
-        (dependencies) => runApp(
+        (deps) => runApp(
           InheritedDependencies(
-            dependencies: dependencies,
+            dependencies: deps,
             child: _ScopeProvider(child: Application()),
           ),
         ),
