@@ -35,13 +35,13 @@ final List<ExecutorStep<Dependencies>> _initializationSteps =
           );
         }),
       ])
-      ..addAll([
-        ExecutorStep(
-          'Failure',
-          (deps) =>
-              throw Exception('This is a failure step for testing purposes'),
-        ),
-      ])
+      // ..addAll([
+      //   ExecutorStep(
+      //     'Failure',
+      //     (deps) =>
+      //         throw Exception('This is a failure step for testing purposes'),
+      //   ),
+      // ])
       ..addAll([
         ExecutorStep(
           'Ready to flutter',

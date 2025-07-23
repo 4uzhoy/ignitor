@@ -40,7 +40,7 @@ class _DeveloperScreenState extends State<DeveloperScreen> {
               ),
             ],
           ),
-          _Category(
+          const _Category(
             categoryName: 'Data',
             children: [
               // _CategoryItem(

@@ -13,35 +13,36 @@ class Application extends StatelessWidget {
   static final _globalKey = GlobalKey(debugLabel: 'ApplicationMaterialContext');
   @override
   Widget build(BuildContext context) {
-    // final settings = SettingsScope.settingsOf(context);
     final mediaQueryData = MediaQuery.of(context);
 
     // final theme = settings.appTheme ?? AppTheme.defaultTheme;
     // final locale = settings.locale;
     return MaterialApp(
-      title: 'Flutter Demo',
-     // showSemanticsDebugger: true,
+      title: 'Ignitor Template',
+      // showSemanticsDebugger: true,
       debugShowCheckedModeBanner: false,
 
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
+        brightness: Brightness.light,
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      builder:
+          (context, child) => MediaQuery(
+            data: mediaQueryData.copyWith(
+              textScaler: TextScaler.linear(
+                mediaQueryData.textScaler
+                    .scale(1) // settings.textScale ?? 1
+                    .clamp(0.5, 2),
+              ),
+            ),
+            child: _Banner(
+              message: 'Ignitor',
+              isEnabled: true,
+              location: BannerLocation.topStart,
+              child: child ?? const SizedBox.shrink(),
+            ),
+          ),
+      home: const WelcomeScreen(),
     );
 
     return MaterialApp.router(
@@ -75,7 +76,8 @@ class Application extends StatelessWidget {
             //   ),
             // ),
             child: _Banner(
-              isDevServer: false,
+              message: 'Ignitor Template',
+              isEnabled: false,
               //  color: theme.primaryColor,
               child: child ?? const SizedBox.shrink(),
             ),
@@ -88,27 +90,28 @@ class _Banner extends StatelessWidget {
   // ignore: unused_element_parameter
   const _Banner({
     required this.child,
+    required this.message,
+    this.isEnabled = false,
     super.key,
-    this.isDevServer = false,
-    this.location,
-    this.color,
-  });
 
-  final bool isDevServer;
+    this.location = BannerLocation.topEnd,
+    this.color = Colors.red,
+  });
+  final bool isEnabled;
+  final String message;
   final Widget child;
-  final BannerLocation? location;
-  final Color? color;
+  final BannerLocation location;
+  final Color color;
 
   @override
   Widget build(BuildContext context) {
-    if (isDevServer) {
+    if (isEnabled)
       return Banner(
-        message: 'DEV',
-        location: location ?? BannerLocation.topEnd,
-        color: color ?? Colors.red,
+        message: message,
+        location: location,
+        color: color,
         child: child,
       );
-    }
 
     return child;
   }
