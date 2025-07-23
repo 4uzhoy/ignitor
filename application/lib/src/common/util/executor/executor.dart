@@ -16,11 +16,20 @@ class StepExecutor<T> {
   StepExecutor({
     required List<ExecutorStep<T>> executorSteps,
     required this.context,
-    required this.l,
+    required this.loggerAdapter,
+    this.executorAlias = '',
     this.continueOnError = false,
   }) : _executorSteps = executorSteps;
-  final LoggerAdapter l;
+
+  final String? executorAlias;
+
+  /// A adapter for logging.
+  final LoggerAdapter loggerAdapter;
+
+  /// A list of steps to be executed.
   final List<ExecutorStep<T>> _executorSteps;
+
+  /// The context associated with the executor.
   final T context;
 
   List<ExecutorStep<T>> get steps => _executorSteps;
@@ -28,7 +37,8 @@ class StepExecutor<T> {
   /// The last state of the executor.
   StepExecutorState<T>? lastState;
 
-  ///
+  LoggerAdapter get l => loggerAdapter;
+
   bool get completedSuccessful => !_hasErrorsInProcess;
 
   bool _hasErrorsInProcess = false;
@@ -81,7 +91,11 @@ class StepExecutor<T> {
       if (error != null && !continueOnError) {
         break;
       } else {
-        l.verbose('${step.alias}  $currentstep/$totalsteps');
+        final percent = (currentstep / totalsteps * 100).clamp(0, 100).toInt();
+        //   l.v6('Initializing step | $currentStep/$totalSteps ($percent%) | "$stepName"');
+        l.verbose(
+          '$executorAlias | $currentstep/$totalsteps ($percent%) "${step.alias}"...',
+        );
 
         yield* emit(
           StepExecutorProgress(
@@ -95,14 +109,18 @@ class StepExecutor<T> {
         );
         final stepFunction = step.fn;
         try {
-          await stepFunction(context);
+          final t = Stopwatch()..start();
 
-          l.verbose('${step.alias} Completed');
+          await stepFunction(context);
+          final time = t..stop();
+          l.verbose(
+            '$executorAlias "${step.alias}" completed in ${time.elapsedMilliseconds}ms.',
+          );
           currentstep++;
           // ignore: avoid_catches_without_on_clauses
         } on Object catch (e, st) {
           ///  Log the error with the step alias and stack trace.
-          l.error('${step.alias} Failured | $e', st);
+          l.error('$executorAlias "${step.alias}" failed | $e', st);
 
           _errorMap.update(step.alias, (value) => e);
           error = e;
@@ -116,7 +134,9 @@ class StepExecutor<T> {
     if (error == null || continueOnError) {
       final time = t..stop();
       lastExecution = DateTime.now();
-      l.verbose('Execution completed in ${time.elapsedMilliseconds}ms.');
+      l.verbose(
+        '$executorAlias completed in ${time.elapsedMilliseconds}ms. | ${time.elapsedMilliseconds ~/ 1000}s.',
+      );
       yield* emit(
         StepExecutorProgress.finishStep(context, lastExecution!, totalsteps),
       );
