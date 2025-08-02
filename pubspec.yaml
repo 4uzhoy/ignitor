@@ -11,3 +11,4 @@ workspace:
   - packages/ui
   - packages/localization
   - packages/analytics
+  - packages/client

@@ -12,7 +12,7 @@ resolution: workspace
 dependencies:
   flutter:
     sdk: flutter
- #locatiozation
+ #localization
   flutter_localizations:
     sdk: flutter
   localization:
@@ -39,6 +39,8 @@ dependencies:
   font_awesome_flutter: ^10.7.0
 
   #clients
+  client:
+    path: ../packages/client
   json_annotation: ^4.9.0
 
   #storage
