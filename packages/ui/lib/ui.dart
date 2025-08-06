@@ -1,8 +1,6 @@
-/// Support for doing something awesome.
-///
-/// More dartdocs go here.
+
 library;
 
-export 'src/widget/space.dart';
+export 'src/widget/widget.dart';
 
-// TODO: Export any libraries intended for clients of this package.
+

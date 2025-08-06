@@ -15,6 +15,7 @@ import 'package:dio/dio.dart' as dio;
 ///   * [StructuredBackendException] - If the response has a status code and a body with a message
 ///
 ///   * [ClientException] - If the response has a status code, but without a body, this is bad, and should be avoided, also for unknown errors and cancelled requests
+/// 
 ///
 ///
 /// {@endtemplate}
