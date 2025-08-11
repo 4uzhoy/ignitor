@@ -19,27 +19,38 @@ void main() async {
   }
 
   final mermaid = generateMermaidERDiagram(entities);
-  final output = File('mermaid_entities.md');
+  if (!Directory('doc/diagram').existsSync()) {
+    Directory('doc/diagram').createSync(recursive: true);
+  }
+  final output = File('doc/diagram/mermaid_entities.md');
   await output.writeAsString(mermaid);
-
-  print('✅ Mermaid erDiagram сохранён в mermaid_entities.md');
+  stdout.writeln(
+    '✅ Mermaid erDiagram saved in doc/diagram/mermaid_entities.md',
+  );
 }
 
 EntityClass? parseEntityClass(String content) {
-  final classRegex = RegExp(r'(class|abstract\s+class)\s+(\w+)(?:\s+extends\s+\S+)?');
+  final classRegex = RegExp(
+    r'(class|abstract\s+class)\s+(\w+)(?:\s+extends\s+\S+)?',
+  );
   final match = classRegex.firstMatch(content);
   if (match == null) return null;
 
   final className = match.group(2)!;
   final fields = <EntityField>[];
 
-  final fieldRegex = RegExp(r'^\s*(?:final|var|late final|late var|late|const)?\s*(\S+)\s+(\w+);', multiLine: true);
+  final fieldRegex = RegExp(
+    r'^\s*(?:final|var|late final|late var|late|const)?\s*(\S+)\s+(\w+);',
+    multiLine: true,
+  );
   for (final match in fieldRegex.allMatches(content)) {
     final type = match.group(1)!;
     final name = match.group(2)!;
     final isNullable = type.endsWith('?');
     final cleanedType = type.replaceAll('?', '');
-    fields.add(EntityField(name: name, type: cleanedType, isNullable: isNullable));
+    fields.add(
+      EntityField(name: name, type: cleanedType, isNullable: isNullable),
+    );
   }
 
   return EntityClass(name: className, fields: fields, methods: []);
@@ -65,10 +76,15 @@ String generateMermaidERDiagram(List<EntityClass> entities) {
     buffer.writeln('  }');
   }
 
-  // Связи
+  // connections
   for (final entity in entities) {
     for (final field in entity.fields) {
-      final targetClass = field.type.replaceAll('List<', '').replaceAll('Entities<', '').replaceAll('>', '').trim();
+      final targetClass =
+          field.type
+              .replaceAll('List<', '')
+              .replaceAll('Entities<', '')
+              .replaceAll('>', '')
+              .trim();
 
       if (entities.any((e) => e.name == targetClass)) {
         buffer.writeln('  ${entity.name} }|..|{ $targetClass : "связь"');
