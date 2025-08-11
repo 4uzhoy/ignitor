@@ -2,7 +2,7 @@ import 'package:collection/collection.dart';
 import 'package:domain/src/model/base/base_entity.dart';
 
 /// A generic class to hold a collection of entities.
-class Entities<T extends $BaseEntity<T>> {
+class Entities<T extends Entity<T>> {
   final List<T> entities;
   Entities({required this.entities});
   Entities.empty() : entities = <T>[];
