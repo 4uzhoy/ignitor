@@ -1,11 +1,14 @@
 import 'dart:collection';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
+import 'package:ignitor/src/features/developer/widget/developer_button.dart';
+
 
 class CommonActions extends ListBase<Widget> {
   // ignore: avoid_unused_constructor_parameters
   CommonActions(BuildContext context, [List<Widget>? actions])
-    : _actions = <Widget>[...?actions];
+    : _actions = <Widget>[...?actions, if (kDebugMode) const DeveloperButton()];
 
   final List<Widget> _actions;
 
