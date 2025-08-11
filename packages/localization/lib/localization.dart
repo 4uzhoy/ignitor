@@ -4,5 +4,4 @@
 library;
 
 export 'src/localization_base.dart';
-
-// TODO: Export any libraries intended for clients of this package.
+export 'package:intl/intl.dart';
