@@ -1,7 +1,7 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:ignitor/src/common/util/logger_util.dart';
+import 'package:ignitor/src/common/util/platform_util.dart';
 import 'package:l/l.dart';
 
 /// Catch all application errors and logs.
@@ -11,6 +11,6 @@ void appZone(FutureOr<void> Function() fn) => l.capture<void>(
     handlePrint: false,
     messageFormatting: LoggerUtil.messageFormatting,
     outputInRelease: false,
-    printColors: Platform.isAndroid || Platform.isWindows,
+    printColors: PlatformUtil.isAndroid || PlatformUtil.isWindows || PlatformUtil.isWeb,
   ),
 );

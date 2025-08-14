@@ -1,6 +1,7 @@
-import 'package:client/src/dio/check_dio_exception_io.dart';
+import 'package:client/src/dio/io/check_dio_exception_io.dart'
+    if (dart.library.js_interop) 'package:client/src/dio/web/check_dio_exception_web.dart';
 import 'package:dio/dio.dart';
-export 'package:dio/dio.dart' show LogInterceptor;
+
 import '../base_client.dart';
 import '../exception/client_exception.dart';
 
@@ -18,8 +19,8 @@ typedef ClientProgressCallback = void Function(int count, int total);
 abstract class DioBaseClient extends BaseClient {
   DioBaseClient({
     required super.baseUrl,
-    List<Interceptor>? interceptors,
     Dio? dio,
+    List<Interceptor>? interceptors,
     Map<String, dynamic>? headers,
   }) : _dio = dio ??
             Dio(
@@ -33,6 +34,7 @@ abstract class DioBaseClient extends BaseClient {
             ) {
     _dio.transformer = BackgroundTransformer();
     _dio.interceptors.addAll(interceptors ?? []);
+    _dio.interceptors.add(LogInterceptor());
   }
 
   final Dio _dio;

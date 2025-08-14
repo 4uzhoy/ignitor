@@ -51,3 +51,6 @@ lib/src/common/constant/generated/
 
 
 macos/
+
+#WEB
+node_modules/
