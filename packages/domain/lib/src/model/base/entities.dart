@@ -6,6 +6,12 @@ class Entities<T extends Entity<T>> {
   final List<T> entities;
   Entities({required this.entities});
   Entities.empty() : entities = <T>[];
+  Entities.fromList(List<T> entities)
+    : entities = List<T>.unmodifiable(entities);
+
+  Entities<T> copyWith({List<T>? entities}) {
+    return Entities<T>(entities: entities ?? this.entities);
+  }
 
   T operator [](int index) => entities[index];
 

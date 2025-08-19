@@ -12,6 +12,11 @@ resolution: workspace
 dependencies:
   flutter:
     sdk: flutter
+
+ #domain
+  domain:
+    path: ../packages/domain
+
  #localization
   flutter_localizations:
     sdk: flutter
@@ -42,6 +47,10 @@ dependencies:
     path: ../packages/client
   json_annotation: ^4.9.0
 
+
+  #state management
+  control: ^0.2.0
+  
   #storage
   kv_preferences: ^1.0.0
 
