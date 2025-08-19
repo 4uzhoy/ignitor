@@ -2,6 +2,7 @@ import 'package:analytics/analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:ignitor/src/common/widget/ignitor_app_bar.dart';
 import 'package:ignitor/src/features/initialization/model/dependencies.dart';
+import 'package:ignitor/src/features/quotes/widget/quotes_screen.dart';
 
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({super.key});
@@ -53,6 +54,17 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 32),
+              FilledButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute<void>(
+                      builder: (context) => const Quotes$Screen(),
+                    ),
+                  );
+                },
+                child: const Text('Watch prime example'),
+              ),
             ],
           ),
         ),
