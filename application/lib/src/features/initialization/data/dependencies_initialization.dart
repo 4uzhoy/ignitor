@@ -6,6 +6,7 @@ import 'package:analytics/analytics.dart';
 import 'package:common/common.dart';
 import 'package:control/control.dart';
 import 'package:ignitor/src/common/client/rest_client.dart';
+import 'package:ignitor/src/common/client/rest_client_api.dart';
 import 'package:ignitor/src/common/controller/controller_observer.dart';
 
 import 'package:ignitor/src/features/initialization/model/dependencies.dart';
@@ -56,7 +57,7 @@ final List<ExecutorStep<Dependencies>> _initializationSteps =
         ExecutorStep('Quotes Repository', (deps) {
           deps.quotesRepository = QuotesRepositoryImpl(
             quotesRemoteDataSource: QuotesRemoteDataSourceImpl(
-              client: deps.restClient,
+              api$quotes: ClientApi$Quotes(client: deps.restClient),
             ),
           );
         }),

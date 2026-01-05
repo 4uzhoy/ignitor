@@ -8,6 +8,6 @@ final class QuotesRepositoryImpl implements QuotesRepository {
 
   final QuotesRemoteDataSource _quotesRemoteDataSource;
   @override
-  Future<List<QuoteEntity>> fetchQuotes() =>
+  Future<Entities<QuoteEntity>> restore() =>
       _quotesRemoteDataSource.fetchQuotes();
 }
