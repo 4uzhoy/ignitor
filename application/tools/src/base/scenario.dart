@@ -1,3 +1,4 @@
+
 import 'package:l/l.dart';
 
 import 'script_stage.dart';
@@ -31,6 +32,7 @@ final watch = Stopwatch()..start();
         l.i('✅ Успех: ${stage.name}');
       } else {
         l.w('⚠️ Провал: ${stage.name}');
+   
         break;
       }
     }

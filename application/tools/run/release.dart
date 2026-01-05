@@ -17,6 +17,6 @@ void main() => appZone(() async {
       // 3. Push changelog to Telegram
       await PushChagelogScenario(scenarioContext: scenarioContext).execute(dryRun: false);
 
-      // TODO: Uncomment when ready
+
       // await UploadGooglePlayScenario(scenarioContext: scenarioContext).execute(dryRun: false);
     });

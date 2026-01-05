@@ -3,9 +3,9 @@ import 'dart:io';
 
 import 'package:path/path.dart' as path;
 
-
 import '../base/scenario.dart';
 import '../base/script_stage.dart';
+import '../stage/save_to_file_stage.dart';
 import '../utils/utils.dart';
 
 final class CollectStringsScenario extends Scenario {
@@ -97,14 +97,16 @@ final class CollectStrings extends ScriptStage$Base {
         featureName = 'common';
       }
 
-      final outputDir = Directory(path.join(outputBaseDir.path, featureName));
-      if (!outputDir.existsSync()) {
-        outputDir.createSync(recursive: true);
-      }
-
-      final outputFile = File(path.join(outputDir.path, '$fileName.json'));
       final content = jsonEncoder.convert(entries);
-      outputFile.writeAsStringSync(content);
+
+      // Используем общий stage для сохранения
+      final saveStage = SaveToFileStage(
+        scenarioContext: scenarioContext,
+        relativePath: 'strings/$featureName',
+        fileName: '$fileName.json',
+        content: content,
+      );
+      await saveStage.run(dryRun: dryRun);
     }
 
     return true;

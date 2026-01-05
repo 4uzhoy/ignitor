@@ -34,7 +34,7 @@ final class UploadGooglePlayStage extends ScriptStage$Base {
       return true;
     }
 
-    // TODO: Раскомментировать когда будет готов Service Account JSON
+
     // final aabPath = '${getProjectDir(toolsWorkspace: false).path}/build/app/outputs/bundle/release/app-release.aab';
     // await cmd(
     //   './gradlew',
@@ -70,7 +70,7 @@ final class UpdateChangelogWithLinkStage extends ScriptStage$Base {
       return true;
     }
 
-    // TODO: Добавить ссылку в CHANGELOG.md перед разделителем ---
+
     // final changelog = File('${getProjectDir().path}/CHANGELOG.md');
     // final lines = changelog.readAsLinesSync();
     // final versionIndex = lines.indexWhere((l) => l.contains('[$versionName]'));

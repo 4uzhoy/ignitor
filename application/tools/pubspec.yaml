@@ -13,6 +13,7 @@ dependencies:
   mime: any
   http_parser: any
   tinygram: any
+  intl: any
 
 dev_dependencies:
   lints: ^2.1.0
