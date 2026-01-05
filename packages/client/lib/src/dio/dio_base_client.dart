@@ -1,9 +1,8 @@
+import 'package:client/src/base_client.dart';
 import 'package:client/src/dio/io/check_dio_exception_io.dart'
     if (dart.library.js_interop) 'package:client/src/dio/web/check_dio_exception_web.dart';
+import 'package:client/src/exception/client_exception.dart';
 import 'package:dio/dio.dart';
-
-import '../base_client.dart';
-import '../exception/client_exception.dart';
 
 const _connectTimeoutInSeconds = Duration(seconds: 10);
 const _receiveTimeoutInSeconds = Duration(seconds: 30);
@@ -34,7 +33,16 @@ abstract class DioBaseClient extends BaseClient {
             ) {
     _dio.transformer = BackgroundTransformer();
     _dio.interceptors.addAll(interceptors ?? []);
-    _dio.interceptors.add(LogInterceptor());
+    _dio.interceptors.add(
+      LogInterceptor(
+        requestHeader: true,
+        requestBody: true,
+        responseHeader: true,
+        responseBody: true,
+        error: true,
+        logPrint: print,
+      ),
+    );
   }
 
   final Dio _dio;
@@ -56,8 +64,7 @@ abstract class DioBaseClient extends BaseClient {
         contentType: 'application/json',
         responseType: ResponseType.json,
       );
-      final response = await _dio.request<Object>(uri.toString(),
-          data: body, options: options);
+      final response = await _dio.request<Object>(uri.toString(), data: body, options: options);
       final resp = await decodeResponse(
         response.data,
         statusCode: response.statusCode,

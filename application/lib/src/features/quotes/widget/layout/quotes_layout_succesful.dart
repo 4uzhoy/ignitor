@@ -1,8 +1,9 @@
 // ignore_for_file: deprecated_member_use
 
+import 'package:control/control.dart';
 import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
-import 'package:ignitor/src/features/initialization/model/dependencies.dart';
+import 'package:ignitor/src/features/quotes/controller/quotes_controller.dart';
 import 'package:ui/ui.dart';
 
 class Quotes$Layout$Successful extends StatefulWidget {
@@ -37,8 +38,7 @@ class _Quotes$Layout$SuccessfulState extends State<Quotes$Layout$Successful>
   Widget build(BuildContext context) {
     final quotes = widget.quotes;
     return PullToRefresh.child(
-      onRefresh:
-          () async => context.dependencies.quotesController.fetchQuotes(),
+      onRefresh: context.controllerOf<QuotesController>().fetchQuotes,
       child: ListView.separated(
         padding: const EdgeInsets.fromLTRB(16, 24, 16, 24),
         physics: const BouncingScrollPhysics(),
@@ -96,7 +96,10 @@ class _QuoteCard extends StatelessWidget {
           ),
         ],
         border: Border.all(
-          color: isDark ? const Color.fromARGB(255, 30, 32, 39) : const Color(0xFFE7E8EE),
+          color:
+              isDark
+                  ? const Color.fromARGB(255, 30, 32, 39)
+                  : const Color(0xFFE7E8EE),
           width: 2,
         ),
       ),

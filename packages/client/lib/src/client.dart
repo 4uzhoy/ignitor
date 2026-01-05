@@ -1,4 +1,4 @@
-typedef JsonMapClientResponse = Future<Map<String, Object?>?>;
+typedef ClientResponse = Future<Map<String, Object?>?>;
 
 /// {@category Client}
 /// {@template client}

@@ -1,6 +1,5 @@
 import 'package:control/control.dart';
 import 'package:flutter/material.dart';
-import 'package:ignitor/src/features/initialization/model/dependencies.dart';
 import 'package:ignitor/src/features/quotes/controller/quotes_controller.dart';
 import 'package:ignitor/src/features/quotes/widget/layout/quotes_layout_succesful.dart';
 import 'package:ui/ui.dart';
@@ -11,7 +10,7 @@ class Quotes$Layout extends StatelessWidget {
   @override
   Widget build(BuildContext context) =>
       StateConsumer<QuotesController, QuotesState>(
-        controller: context.dependencies.quotesController,
+        controller: context.controllerOf<QuotesController>(),
         listener: (context, controller, previous, current) {
           if (current is QuotesState$Error) {
             ScaffoldMessenger.of(

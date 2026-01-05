@@ -55,7 +55,7 @@ class LanguageInterceptor extends InterceptorsWrapper {
   final LocaleStore localeStore;
 
   @override
-  void onRequest(
+  Future<void> onRequest(
       RequestOptions options, RequestInterceptorHandler handler) async {
     final locale = localeStore.getLocale();
     final region = localeStore.getRegion();

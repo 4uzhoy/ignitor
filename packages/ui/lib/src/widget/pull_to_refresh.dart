@@ -6,39 +6,37 @@ import 'package:flutter/material.dart';
 /// Вариант B: делает не‑скроллящегося потомка скроллящимся (через SingleChildScrollView).
 class PullToRefresh extends StatelessWidget {
   const PullToRefresh.child({
-    super.key,
     required this.onRefresh,
     required this.child,
+    super.key,
     this.edgeOffset = 12,
     this.displacement = 48,
     this.color,
     this.backgroundColor,
     this.strokeWidth = 2.0,
     this.notificationPredicate = defaultScrollNotificationPredicate,
-  }) : _wrapNonScrollable = false;
+  });
 
   PullToRefresh.box({
-    super.key,
     required this.onRefresh,
     required Widget child,
+    super.key,
     this.edgeOffset = 12,
     this.displacement = 48,
     this.color,
     this.backgroundColor,
     this.strokeWidth = 2.0,
     this.notificationPredicate = defaultScrollNotificationPredicate,
-    ScrollPhysics? physics,
     EdgeInsetsGeometry padding = const EdgeInsets.only(
       bottom: 1,
     ), // чтобы AlwaysScrollable работал
   }) : child = SingleChildScrollView(
-         physics: AlwaysScrollableScrollPhysics(
+         physics: const AlwaysScrollableScrollPhysics(
            parent: BouncingScrollPhysics(),
          ),
          padding: padding,
          child: child,
-       ),
-       _wrapNonScrollable = true;
+       );
 
   final Future<void> Function() onRefresh;
   final Widget child;
@@ -51,31 +49,26 @@ class PullToRefresh extends StatelessWidget {
   final double strokeWidth;
   final ScrollNotificationPredicate notificationPredicate;
 
-  final bool _wrapNonScrollable;
-
   @override
-  Widget build(BuildContext context) {
-    return RefreshIndicator(
-      onRefresh: onRefresh,
-      edgeOffset: edgeOffset,
-      displacement: displacement,
-      color: color,
-      backgroundColor: backgroundColor,
-      strokeWidth: strokeWidth,
-      notificationPredicate: notificationPredicate,
-      child: child,
-    );
-  }
+  Widget build(BuildContext context) => RefreshIndicator(
+    onRefresh: onRefresh,
+    edgeOffset: edgeOffset,
+    displacement: displacement,
+    color: color,
+    backgroundColor: backgroundColor,
+    strokeWidth: strokeWidth,
+    notificationPredicate: notificationPredicate,
+    child: child,
+  );
 }
 
 /// Купертиновый вариант для sliver‑экранов.
 class CupertinoPullToRefreshSliver extends StatelessWidget {
-  const CupertinoPullToRefreshSliver({super.key, required this.onRefresh});
+  const CupertinoPullToRefreshSliver({required this.onRefresh, super.key});
 
   final Future<void> Function() onRefresh;
 
   @override
-  Widget build(BuildContext context) {
-    return CupertinoSliverRefreshControl(onRefresh: onRefresh);
-  }
+  Widget build(BuildContext context) =>
+      CupertinoSliverRefreshControl(onRefresh: onRefresh);
 }

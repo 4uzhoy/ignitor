@@ -3,7 +3,6 @@ import 'dart:ui';
 
 import 'package:common/common.dart';
 import 'package:flutter/widgets.dart';
-
 import 'package:ignitor/src/features/initialization/data/dependencies_initialization.dart';
 import 'package:ignitor/src/features/initialization/model/dependencies.dart';
 

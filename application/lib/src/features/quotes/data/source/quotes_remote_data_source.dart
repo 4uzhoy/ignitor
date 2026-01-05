@@ -16,13 +16,11 @@ class QuotesRemoteDataSourceImpl implements QuotesRemoteDataSource {
   @override
   Future<Entities<QuoteEntity>> fetchQuotes() async {
     final response = await api$quotes.fetchQuotes();
-    if (response?['quotes'] == null || (response!['quotes'] is! JsonList))
-      return Entities<QuoteEntity>.empty();
+    // if (response?['quotes'] == null || (response!['quotes'] is! JsonList))
+    //   return Entities<QuoteEntity>.empty();
     final list =
         (response!['quotes'] as JsonList)
-            .map<QuoteEntity>(
-              (json) => QuotesMapper$Api$Entity().map1(ApiQuote.fromJson(json)),
-            )
+            .map<QuoteEntity>((json) => QuotesMapper$Api$Entity().map1(ApiQuote.fromJson(json as JsonMap)))
             .toList();
     return Entities.fromList(list);
   }

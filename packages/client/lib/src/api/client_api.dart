@@ -1,7 +1,7 @@
 import 'package:client/client.dart';
 
 typedef JsonMap = Map<String, dynamic>;
-typedef JsonList = List<Map<String, dynamic>>;
+typedef JsonList = List<dynamic>;
 typedef Response = Future<JsonMap?>;
 
 /// An abstract base class for client APIs.

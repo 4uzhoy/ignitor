@@ -2,11 +2,10 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:isolate';
 
+import 'package:client/src/client.dart';
+import 'package:client/src/exception/client_exception.dart';
 import 'package:meta/meta.dart';
 import 'package:path/path.dart' as p;
-
-import 'client.dart';
-import 'exception/client_exception.dart';
 
 /// {@macro rest_client}
 @immutable

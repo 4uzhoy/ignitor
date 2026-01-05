@@ -1,0 +1,12 @@
+{
+    "ENVIRONMENT": "development",
+    "API_LOG_REQUEST_HEADER": true,
+    "API_LOG_RESPONSE_HEADER": true,
+    "API_LOG_ERROR": true,
+    "API_LOG_REQUEST_BODY": true,
+    "API_LOG_RESPONSE_BODY": true,
+    "DB_LOG": true,
+    "DROP_DATABASE": false,
+    "DEBUGGIN_LABELS": true,
+    "DEVELOPER_MODE": true
+}

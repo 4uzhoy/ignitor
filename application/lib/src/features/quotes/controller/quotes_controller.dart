@@ -42,7 +42,7 @@ final class QuotesController extends StateController<QuotesState>
 
   final QuotesRepository _quotesRepository;
 
-  void fetchQuotes() => handle(
+  Future<void> fetchQuotes() => handle(
     () async {
       setState(QuotesState$Processed(quotes: state.quotes));
 
