@@ -37,7 +37,7 @@ dependencies:
 
   #utils
   tinygram: ^1.0.2
-  pubspec_generator: ^4.0.0
+  pubspec_generator: ^5.0.0
   collection: any
   path: any
   meta: any
