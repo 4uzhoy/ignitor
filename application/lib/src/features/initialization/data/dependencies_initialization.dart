@@ -3,13 +3,14 @@
 import 'dart:async';
 
 import 'package:analytics/analytics.dart';
+import 'package:client/client.dart';
 import 'package:common/common.dart';
 import 'package:control/control.dart';
 import 'package:ignitor/src/common/client/rest_client.dart';
+import 'package:ignitor/src/common/client/rest_client_api.dart';
+import 'package:ignitor/src/common/constant/config.dart';
 import 'package:ignitor/src/common/controller/controller_observer.dart';
-
 import 'package:ignitor/src/features/initialization/model/dependencies.dart';
-import 'package:ignitor/src/features/quotes/controller/quotes_controller.dart';
 import 'package:ignitor/src/features/quotes/data/repository/quotes_repository.dart';
 import 'package:ignitor/src/features/quotes/data/source/quotes_remote_data_source.dart';
 import 'package:kv_preferences/kv_preferences.dart';
@@ -41,12 +42,21 @@ final List<ExecutorStep<Dependencies>> _initializationSteps =
             ],
           );
           deps.analyticsManager = analyticsManager;
-          analyticsManager.logEvent(
-            const AnalyticsEventCategory$Start().initializationComplete(),
-          );
+          analyticsManager.logEvent(const AnalyticsEventCategory$Start().initializationComplete());
         }),
         ExecutorStep('Rest Client', (deps) {
           deps.restClient = RestClient(baseUrl: 'https://dummyjson.com/');
+        }),
+        ExecutorStep('Add interceptors', (deps) {
+          final logInterceptor = LogInterceptor(
+            request: true,
+            requestBody: Config.apiLogRequestBody,
+            responseBody: Config.apiLogResponseBody,
+            responseHeader: Config.apiLogResponseHeader,
+            error: Config.apiLogError,
+            logPrint: (obj) => l.d(obj.toString()),
+          );
+          deps.restClient.dio.interceptors.add(logInterceptor);
         }),
       ])
       /// ===================================
@@ -55,19 +65,7 @@ final List<ExecutorStep<Dependencies>> _initializationSteps =
       ..addAll([
         ExecutorStep('Quotes Repository', (deps) {
           deps.quotesRepository = QuotesRepositoryImpl(
-            quotesRemoteDataSource: QuotesRemoteDataSourceImpl(
-              client: deps.restClient,
-            ),
-          );
-        }),
-      ])
-      /// ===================================
-      /// --- Controllers Initialization ---
-      /// ==================================
-      ..addAll([
-        ExecutorStep('Quotes Controller', (deps) {
-          deps.quotesController = QuotesController(
-            quotesRepository: deps.quotesRepository,
+            quotesRemoteDataSource: QuotesRemoteDataSourceImpl(api$quotes: ClientApi$Quotes(client: deps.restClient)),
           );
         }),
       ])
@@ -81,12 +79,7 @@ final List<ExecutorStep<Dependencies>> _initializationSteps =
       /// ===================================
       /// --- Finalization ---
       /// ===================================
-      ..addAll([
-        ExecutorStep(
-          'Ready to flutter',
-          (_) => Future.delayed(const Duration(milliseconds: 1)),
-        ),
-      ]);
+      ..addAll([ExecutorStep('Ready to flutter', (_) => Future.delayed(const Duration(milliseconds: 1)))]);
 
 Stream<StepExecutorState<Dependencies>> $initializeDependencies() async* {
   final executor = StepExecutor<Dependencies>(
@@ -96,13 +89,12 @@ Stream<StepExecutorState<Dependencies>> $initializeDependencies() async* {
     loggerAdapter: _InitializationLoggerAdapter(),
     continueOnError: false,
   );
-  yield* executor.execute(500);
+  yield* executor.execute(0);
 }
 
 class _InitializationLoggerAdapter implements LoggerAdapter {
   @override
-  void error(String message, StackTrace stackTrace, {int level = 1}) =>
-      l.e(message, stackTrace);
+  void error(String message, StackTrace stackTrace, {int level = 1}) => l.e(message, stackTrace);
 
   @override
   void info(String message, {int level = 1}) => l.i(message);

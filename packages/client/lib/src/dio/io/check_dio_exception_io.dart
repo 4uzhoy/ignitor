@@ -15,7 +15,7 @@ import 'package:dio/dio.dart' as dio;
 ///   * [StructuredBackendException] - If the response has a status code and a body with a message
 ///
 ///   * [ClientException] - If the response has a status code, but without a body, this is bad, and should be avoided, also for unknown errors and cancelled requests
-/// 
+///
 ///
 ///
 /// {@endtemplate}
@@ -43,7 +43,8 @@ Object? checkDioException(dio.DioException e) {
           e.response?.statusCode != null &&
           e.response?.data != null) {
         return StructuredBackendException(
-            response: e.response?.data, statusCode: e.response?.statusCode);
+            response: e.response?.data as Map<String, Object?>,
+            statusCode: e.response?.statusCode);
       } else {
         return ClientException(
             message: 'Bad response with status code, but without Body',

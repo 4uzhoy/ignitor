@@ -19,11 +19,9 @@ class _TestBaseClient extends BaseClient {
 
   List<int> encode(Map<String, Object?> body) => encodeBody(body);
 
-  Uri build(String path, {Map<String, String?>? queryParams}) =>
-      buildUri(path: path, queryParams: queryParams);
+  Uri build(String path, {Map<String, String?>? queryParams}) => buildUri(path: path, queryParams: queryParams);
 
-  Future<Map<String, Object?>?> decode(Object? body, {int? statusCode}) =>
-      decodeResponse(body, statusCode: statusCode);
+  Future<Map<String, Object?>?> decode(Object? body, {int? statusCode}) => decodeResponse(body, statusCode: statusCode);
 }
 
 void main() {
@@ -42,8 +40,7 @@ void main() {
       });
 
       test('throws ClientException for non encodable body', () {
-        expect(() => client.encode({'key': Object()}),
-            throwsA(isA<ClientException>()));
+        expect(() => client.encode({'key': Object()}), throwsA(isA<ClientException>()));
       });
     });
 
@@ -53,8 +50,7 @@ void main() {
           'q': 'test',
           'remove': null,
         });
-        expect(uri.toString(),
-            'https://api.example.com/base/endpoint?q=test');
+        expect(uri.toString(), 'https://api.example.com/base/endpoint?q=test');
       });
     });
 
@@ -73,11 +69,9 @@ void main() {
         });
         expect(
           () => client.decode(body, statusCode: 400),
-          throwsA(isA<StructuredBackendException>()
-              .having((e) => e.statusCode, 'statusCode', 400)),
+          throwsA(isA<StructuredBackendException>().having((e) => e.statusCode, 'statusCode', 400)),
         );
       });
     });
   });
 }
-

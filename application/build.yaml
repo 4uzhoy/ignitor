@@ -25,9 +25,4 @@ targets:
           include_if_null: true
 
 builders:
-  # prime_example:
-  #   import: "package:vitame/src/common/meta/prime_example/builder.dart"
-  #   builder_factories: ["primeExampleBuilder"]
-  #   build_extensions: {".dart": []}  # Не добавляем .prime.md везде
-  #   auto_apply: root_package
-  #   build_to: source
+

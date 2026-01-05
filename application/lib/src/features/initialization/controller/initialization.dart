@@ -3,7 +3,6 @@ import 'dart:ui';
 
 import 'package:common/common.dart';
 import 'package:flutter/widgets.dart';
-
 import 'package:ignitor/src/features/initialization/data/dependencies_initialization.dart';
 import 'package:ignitor/src/features/initialization/model/dependencies.dart';
 
@@ -19,7 +18,9 @@ Stream<StepExecutorState<Dependencies>> $initializeApplication() async* {
 
 Future<void> _catchExceptions() async {
   try {
+    // ignore: prefer_expression_function_bodies
     PlatformDispatcher.instance.onError = (error, stackTrace) {
+      
       // ErrorUtil.logError(
       //   error,
       //   stackTrace,

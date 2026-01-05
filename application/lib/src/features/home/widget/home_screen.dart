@@ -2,7 +2,7 @@ import 'package:analytics/analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:ignitor/src/common/widget/ignitor_app_bar.dart';
 import 'package:ignitor/src/features/initialization/model/dependencies.dart';
-import 'package:ignitor/src/features/quotes/widget/quotes_screen.dart';
+import 'package:ignitor/src/features/quotes/widget/screen/quotes_screen.dart';
 
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({super.key});

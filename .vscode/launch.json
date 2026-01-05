@@ -14,7 +14,7 @@
       "console": "debugConsole",
       "env": {},
       "args": [
-        //"--dart-define-from-file=application/.env/development.json",
+        "--dart-define-from-file=.config/development.json",
       ]
     },
     {

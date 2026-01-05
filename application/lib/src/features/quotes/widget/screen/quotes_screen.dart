@@ -1,6 +1,7 @@
+import 'package:control/control.dart';
 import 'package:flutter/material.dart';
 import 'package:ignitor/src/common/widget/ignitor_app_bar.dart';
-import 'package:ignitor/src/features/initialization/model/dependencies.dart';
+import 'package:ignitor/src/features/quotes/controller/quotes_controller.dart';
 import 'package:ignitor/src/features/quotes/widget/layout/quotes_layout.dart';
 
 class Quotes$Screen extends StatefulWidget {
@@ -14,7 +15,7 @@ class _Quotes$ScreenState extends State<Quotes$Screen> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    context.dependencies.quotesController.fetchQuotes();
+    context.controllerOf<QuotesController>().fetchQuotes();
   }
 
   @override
@@ -33,9 +34,7 @@ class QuotesScreen$Refresh extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => FloatingActionButton(
-    onPressed: () {
-      context.dependencies.quotesController.fetchQuotes();
-    },
+    onPressed: () => context.controllerOf<QuotesController>().fetchQuotes(),
     tooltip: 'Refresh Quotes',
     child: const Icon(Icons.refresh),
   );

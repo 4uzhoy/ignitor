@@ -2,6 +2,7 @@ import 'package:common/common.dart';
 import 'package:flutter/material.dart';
 import 'package:ignitor/src/features/initialization/model/dependencies.dart';
 import 'package:ignitor/src/features/initialization/widget/application.dart';
+import 'package:ignitor/src/features/initialization/widget/application_controller_scope.dart';
 import 'package:ignitor/src/features/initialization/widget/application_error.dart';
 import 'package:ignitor/src/features/initialization/widget/inherited_dependencies.dart';
 import 'package:ignitor/src/features/initialization/widget/splash_screen.dart';
@@ -53,5 +54,5 @@ class _ScopeProvider extends StatelessWidget {
   final Widget child;
 
   @override
-  Widget build(BuildContext context) => child;
+  Widget build(BuildContext context) => ApplicationControllerScope(child: child);
 }

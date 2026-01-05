@@ -1,5 +1,4 @@
 import 'package:domain/domain.dart';
-import 'package:domain/src/base/model/value_object.dart';
 
 /// {@template updatable}
 /// Base interface for repositories that support restoring entities

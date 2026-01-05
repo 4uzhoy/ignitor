@@ -42,20 +42,20 @@ final class QuotesController extends StateController<QuotesState>
 
   final QuotesRepository _quotesRepository;
 
-  void fetchQuotes() => handle(
-    name: 'fetchQuotes',
-    meta: {'state': state.runtimeType},
+  Future<void> fetchQuotes() => handle(
     () async {
       setState(QuotesState$Processed(quotes: state.quotes));
 
       /// a small delay to simulate long network request
       await Future<void>.delayed(const Duration(milliseconds: 3000));
-      final quotes = await _quotesRepository.fetchQuotes();
-      setState(QuotesState$Successful(quotes: Entities.fromList(quotes)));
+      final quotes = await _quotesRepository.restore();
+      setState(QuotesState$Successful(quotes: quotes));
     },
     error: (error, stackTrace) async {
       setState(QuotesState$Error(quotes: state.quotes, error: error));
     },
     done: () async {},
+    name: 'fetchQuotes',
+    meta: {'state': state.runtimeType},
   );
 }
