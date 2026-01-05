@@ -1,5 +1,5 @@
+import 'package:common/common.dart';
 import 'package:flutter/material.dart';
-import 'package:ignitor/src/common/util/executor/executor_state.dart';
 import 'package:ignitor/src/features/initialization/model/dependencies.dart';
 import 'package:ignitor/src/features/initialization/widget/application.dart';
 import 'package:ignitor/src/features/initialization/widget/application_error.dart';

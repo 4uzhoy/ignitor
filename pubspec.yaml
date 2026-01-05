@@ -12,3 +12,5 @@ workspace:
   - packages/localization
   - packages/analytics
   - packages/client
+  - packages/common
+  - packages/database

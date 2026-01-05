@@ -1,8 +1,9 @@
 import 'dart:async';
 import 'dart:ui';
 
+import 'package:common/common.dart';
 import 'package:flutter/widgets.dart';
-import 'package:ignitor/src/common/util/executor/executor_state.dart';
+
 import 'package:ignitor/src/features/initialization/data/dependencies_initialization.dart';
 import 'package:ignitor/src/features/initialization/model/dependencies.dart';
 
@@ -37,7 +38,7 @@ Future<void> _catchExceptions() async {
       // FlutterError.presentError(details);
       sourceFlutterError?.call(details);
     };
-  } on Object catch (error, stackTrace) {
+  } on Object catch (error, _) {
     // ErrorUtil.logError(error, stackTrace).ignore();
   }
 }

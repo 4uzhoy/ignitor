@@ -13,6 +13,10 @@ dependencies:
   flutter:
     sdk: flutter
 
+ #common
+  common:
+    path: ../packages/common
+
  #domain
   domain:
     path: ../packages/domain
@@ -26,6 +30,10 @@ dependencies:
   #analytics
   analytics: 
     path: ../packages/analytics
+
+  #database
+  database:
+    path: ../packages/database
 
   #utils
   tinygram: ^1.0.2

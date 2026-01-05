@@ -3,20 +3,16 @@
 import 'dart:async';
 
 import 'package:analytics/analytics.dart';
+import 'package:common/common.dart';
 import 'package:control/control.dart';
-import 'package:domain/domain.dart';
 import 'package:ignitor/src/common/client/rest_client.dart';
 import 'package:ignitor/src/common/controller/controller_observer.dart';
-import 'package:ignitor/src/common/util/executor/executor.dart';
-import 'package:ignitor/src/common/util/executor/executor_state.dart';
-import 'package:ignitor/src/common/util/executor/executor_step.dart';
-import 'package:ignitor/src/common/util/logger_util.dart';
+
 import 'package:ignitor/src/features/initialization/model/dependencies.dart';
 import 'package:ignitor/src/features/quotes/controller/quotes_controller.dart';
 import 'package:ignitor/src/features/quotes/data/repository/quotes_repository.dart';
 import 'package:ignitor/src/features/quotes/data/source/quotes_remote_data_source.dart';
 import 'package:kv_preferences/kv_preferences.dart';
-import 'package:l/l.dart';
 
 final List<ExecutorStep<Dependencies>> _initializationSteps =
     <ExecutorStep<Dependencies>>[ ]
@@ -113,4 +109,7 @@ class _InitializationLoggerAdapter implements LoggerAdapter {
 
   @override
   void verbose(String message, {int level = 3}) => l.v(message);
+
+  @override
+  String get loggerAlias => 'InitializationExecutor';
 }

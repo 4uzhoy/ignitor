@@ -1,12 +1,15 @@
 name: domain
 description: Domain layer of the application, containing business logic and entities.
 version: 0.0.1
+publish_to: 'none'
 resolution: workspace
 environment:
   sdk: ^3.7.2
 
 dependencies:
-  collection: any
+  common:
+    path: ../common
+
 
 dev_dependencies:
   lints: ^5.0.0
