@@ -13,3 +13,4 @@ workspace:
   - packages/analytics
   - packages/client
   - packages/common
+  - packages/database

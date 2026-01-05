@@ -1,0 +1,20 @@
+name: database
+description: Database layer using Drift for local data storage and management.
+version: 1.0.0
+resolution: workspace
+publish_to: 'none'
+environment:
+  sdk: ^3.8.1
+
+dependencies:
+  drift: ^2.28.0
+  drift_flutter: ^0.2.5
+  drift_db_viewer: ^2.1.0
+  common: 
+    path: ../common
+
+dev_dependencies:
+  lints: ^5.0.0
+  test: ^1.24.0
+  build_runner: any
+  drift_dev: ^2.28.0

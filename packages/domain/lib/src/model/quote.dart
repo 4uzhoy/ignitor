@@ -1,6 +1,6 @@
 import 'package:domain/domain.dart';
 
-final class QuoteEntity extends Entity<QuoteEntity> {
+final class QuoteEntity extends Entity {
   const QuoteEntity({
     required this.text,
     required this.author,

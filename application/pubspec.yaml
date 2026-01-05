@@ -12,7 +12,7 @@ resolution: workspace
 dependencies:
   flutter:
     sdk: flutter
-    
+
  #common
   common:
     path: ../packages/common
@@ -30,6 +30,10 @@ dependencies:
   #analytics
   analytics: 
     path: ../packages/analytics
+
+  #database
+  database:
+    path: ../packages/database
 
   #utils
   tinygram: ^1.0.2
