@@ -18,7 +18,9 @@ Stream<StepExecutorState<Dependencies>> $initializeApplication() async* {
 
 Future<void> _catchExceptions() async {
   try {
+    // ignore: prefer_expression_function_bodies
     PlatformDispatcher.instance.onError = (error, stackTrace) {
+      
       // ErrorUtil.logError(
       //   error,
       //   stackTrace,

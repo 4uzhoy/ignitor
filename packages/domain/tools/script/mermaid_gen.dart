@@ -57,15 +57,15 @@ EntityClass? parseEntityClass(String content) {
 }
 
 String generateMermaidERDiagram(List<EntityClass> entities) {
-  final buffer = StringBuffer();
+  final buffer = StringBuffer()
 
-  buffer.writeln('```mermaid');
-  buffer.writeln('erDiagram');
+  ..writeln('```mermaid')
+  ..writeln('erDiagram');
 
   for (final entity in entities) {
     final entityIdType = '${entity.name.replaceAll('Entity', '')}ID';
-    buffer.writeln('  ${entity.name} {');
-    buffer.writeln('    $entityIdType id');
+    buffer..writeln('  ${entity.name} {')
+    ..writeln('    $entityIdType id');
 
     for (final field in entity.fields) {
       final type = _mapTypeToMermaid(field.type);

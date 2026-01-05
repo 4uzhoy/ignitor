@@ -80,6 +80,7 @@ class _Typography extends StatelessWidget {
                   ),
                   // ignore: deprecated_member_use
                   Text(
+                    // ignore: deprecated_member_use
                     'color(hex) #${style!.color!.value.toRadixString(16)}',
                     style: TextStyle(color: style!.color),
                   ),

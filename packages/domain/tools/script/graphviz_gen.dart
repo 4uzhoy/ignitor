@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'dart:io';
 
 import 'entity_class.dart';
@@ -62,23 +64,23 @@ EntityClass? parseEntityClass(String content) {
 }
 
 String generateDot(List<EntityClass> entities, List<EntityClass> repositories) {
-  final buffer = StringBuffer();
-
-  buffer.writeln('digraph G {');
-  buffer.writeln('  rankdir=TB;');
-  buffer.writeln('  node [shape=plaintext, fontname="Arial", fontsize=16];');
+  final buffer =
+      StringBuffer()
+        ..writeln('digraph G {')
+        ..writeln('  rankdir=TB;')
+        ..writeln('  node [shape=plaintext, fontname="Arial", fontsize=16];');
 
   final colors = [
-    "#c8e6c9",
-    "#b3e5fc",
-    "#fff9c4",
-    "#ffe0b2",
-    "#f8bbd0",
-    "#d1c4e9",
-    "#b2dfdb",
-    "#bbdefb",
-    "#ffcdd2",
-    "#c5cae9",
+    '#c8e6c9',
+    '#b3e5fc',
+    '#fff9c4',
+    '#ffe0b2',
+    '#f8bbd0',
+    '#d1c4e9',
+    '#b2dfdb',
+    '#bbdefb',
+    '#ffcdd2',
+    '#c5cae9',
   ];
 
   var colorIndex = 0;
@@ -88,14 +90,16 @@ String generateDot(List<EntityClass> entities, List<EntityClass> repositories) {
   for (final repo in repositories) {
     final color = colors[colorIndex % colors.length];
     colorIndex++;
-    buffer.writeln('  ${repo.name} [label=<');
-    buffer.writeln('    <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" BGCOLOR="$color">');
-    buffer.writeln('      <TR><TD><B>${repo.name}</B></TD></TR>');
+    buffer
+      ..writeln('  ${repo.name} [label=<')
+      ..writeln('    <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" BGCOLOR="$color">')
+      ..writeln('      <TR><TD><B>${repo.name}</B></TD></TR>');
     for (final method in repo.methods) {
       buffer.writeln('      <TR><TD ALIGN="LEFT">+ $method</TD></TR>');
     }
-    buffer.writeln('    </TABLE>');
-    buffer.writeln('  >];');
+    buffer
+      ..writeln('    </TABLE>')
+      ..writeln('  >];');
   }
   buffer.writeln('  { rank=same; ${repoNames.join('; ')}; }');
 
@@ -104,17 +108,19 @@ String generateDot(List<EntityClass> entities, List<EntityClass> repositories) {
   for (final entity in entities) {
     final color = colors[colorIndex % colors.length];
     colorIndex++;
-    buffer.writeln('  ${entity.name} [label=<');
-    buffer.writeln('    <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" BGCOLOR="$color">');
-    buffer.writeln('      <TR><TD><B>${entity.name}</B></TD></TR>');
+    buffer
+      ..writeln('  ${entity.name} [label=<')
+      ..writeln('    <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" BGCOLOR="$color">')
+      ..writeln('      <TR><TD><B>${entity.name}</B></TD></TR>');
     for (final field in entity.fields) {
       buffer.writeln('      <TR><TD ALIGN="LEFT">${field.type} ${field.name}</TD></TR>');
     }
     for (final method in entity.methods) {
       buffer.writeln('      <TR><TD ALIGN="LEFT">+ $method</TD></TR>');
     }
-    buffer.writeln('    </TABLE>');
-    buffer.writeln('  >];');
+    buffer
+      ..writeln('    </TABLE>')
+      ..writeln('  >];');
   }
   buffer.writeln('  { rank=same; ${entityNames.join('; ')}; }');
 

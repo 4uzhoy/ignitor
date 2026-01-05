@@ -1,4 +1,5 @@
 import 'dart:ui';
+
 import 'package:flutter/material.dart';
 
 /// A lightweight **loading overlay** with:
@@ -26,9 +27,9 @@ import 'package:flutter/material.dart';
 /// - Wraps the indicator in `RepaintBoundary` to minimize repaints.
 final class LoadingOverlay extends StatelessWidget {
   const LoadingOverlay({
-    super.key,
     required this.child,
     required this.inProgress,
+    super.key,
     this.indicator,
     this.duration = const Duration(milliseconds: 350),
     this.blurSigma = 4,
@@ -72,67 +73,56 @@ final class LoadingOverlay extends StatelessWidget {
   final String semanticLabel;
 
   @override
-  Widget build(BuildContext context) {
-    return Stack(
-      fit: StackFit.expand,
-      children: <Widget>[
-        // Main content
-        Positioned.fill(child: child),
+  Widget build(BuildContext context) => Stack(
+    fit: StackFit.expand,
+    children: <Widget>[
+      // Main content
+      Positioned.fill(child: child),
 
-        // Loading overlay
-        Positioned.fill(
-          child: AbsorbPointer(
-            absorbing: absorb && inProgress,
-            child: AnimatedSwitcher(
-              duration: duration,
-              switchInCurve: switchInCurve,
-              switchOutCurve: switchOutCurve,
-              layoutBuilder:
-                  (currentChild, previousChildren) => Stack(
-                    fit: StackFit.expand,
-                    children: <Widget>[
-                      ...previousChildren,
-                      if (currentChild != null) currentChild,
-                    ],
-                  ),
-              child:
-                  inProgress
-                      ? ClipRect(
-                        child: BackdropFilter(
-                          filter: ImageFilter.blur(
-                            sigmaX: blurSigma,
-                            sigmaY: blurSigma,
-                          ),
-                          child: ColoredBox(
-                            color: barrierColor ?? Colors.transparent,
-                            child: Align(
-                              alignment: alignment,
-                              child: Semantics(
-                                label: semanticLabel,
-                                liveRegion: true,
-                                // Rebuild only the indicator while animating.
-                                child: RepaintBoundary(
-                                  child:
-                                      indicator ??
-                                      const SizedBox(
-                                        height: 36,
-                                        width: 36,
-                                        child:
-                                            CircularProgressIndicator.adaptive(
-                                              strokeWidth: 3,
-                                            ),
-                                      ),
-                                ),
+      // Loading overlay
+      Positioned.fill(
+        child: AbsorbPointer(
+          absorbing: absorb && inProgress,
+          child: AnimatedSwitcher(
+            duration: duration,
+            switchInCurve: switchInCurve,
+            switchOutCurve: switchOutCurve,
+            layoutBuilder:
+                (currentChild, previousChildren) => Stack(
+                  fit: StackFit.expand,
+                  children: <Widget>[...previousChildren, if (currentChild != null) currentChild],
+                ),
+            child:
+                inProgress
+                    ? ClipRect(
+                      child: BackdropFilter(
+                        filter: ImageFilter.blur(sigmaX: blurSigma, sigmaY: blurSigma),
+                        child: ColoredBox(
+                          color: barrierColor ?? Colors.transparent,
+                          child: Align(
+                            alignment: alignment,
+                            child: Semantics(
+                              label: semanticLabel,
+                              liveRegion: true,
+                              // Rebuild only the indicator while animating.
+                              child: RepaintBoundary(
+                                child:
+                                    indicator ??
+                                    const SizedBox(
+                                      height: 36,
+                                      width: 36,
+                                      child: CircularProgressIndicator.adaptive(strokeWidth: 3),
+                                    ),
                               ),
                             ),
                           ),
                         ),
-                      )
-                      : const SizedBox.shrink(),
-            ),
+                      ),
+                    )
+                    : const SizedBox.shrink(),
           ),
         ),
-      ],
-    );
-  }
+      ),
+    ],
+  );
 }
