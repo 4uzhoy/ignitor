@@ -12,6 +12,10 @@ resolution: workspace
 dependencies:
   flutter:
     sdk: flutter
+    
+ #common
+  common:
+    path: ../packages/common
 
  #domain
   domain:
