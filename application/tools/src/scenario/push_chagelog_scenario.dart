@@ -48,7 +48,7 @@ final class SendTelegramMessageStage extends ScriptStage$Base {
     }
 
     final header =
-        '🚀 FielMa $versionName ($buildNumber)\n🔗 [Ссылка на Google Play Internal Testing](https://play.google.com/apps/internaltest/4701366770659877207)\n\n';
+        '🚀 Ignitor $versionName ($buildNumber)\n🔗 [Ссылка на Google Play Internal Testing](https://play.google.com/apps/internaltest/4701366770659877207)\n\n';
     final footer = '';
 
     // Разбиваем changelog на части
@@ -152,8 +152,8 @@ final class RenameApkStage extends ScriptStage$Base {
     final arm64OriginalPath = '$buildDir/app-arm64-v8a-release.apk';
     final armeabiOriginalPath = '$buildDir/app-armeabi-v7a-release.apk';
 
-    final arm64NewName = 'FielMa-$environment-$versionName+$buildNumber-arm64-v8a.apk';
-    final armeabiNewName = 'FielMa-$environment-$versionName+$buildNumber-armeabi-v7a.apk';
+    final arm64NewName = 'Ignitor-$environment-$versionName+$buildNumber-arm64-v8a.apk';
+    final armeabiNewName = 'Ignitor-$environment-$versionName+$buildNumber-armeabi-v7a.apk';
 
     final arm64NewPath = '$buildDir/$arm64NewName';
     final armeabiNewPath = '$buildDir/$armeabiNewName';
