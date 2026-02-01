@@ -14,7 +14,7 @@ dependencies:
   collection: any
   uuid: any
   meta: any
-  platform_info: ^4.0.2
+  platform_info: ^5.0.0
   latlong2: ^0.9.1
   rxdart: ^0.28.0
 dev_dependencies:
